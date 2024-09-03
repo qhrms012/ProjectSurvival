@@ -18,7 +18,8 @@ public class Player : MonoBehaviour
     // SpriteRenderer 컴포넌트를 참조할 변수 (스프라이트의 방향을 조정할 때 사용)
     private SpriteRenderer sprite;
 
-    private Animator animation;
+    // Animator 컴포넌트를 참조할 변수 (캐릭터 플레이어의 애니메이션 조정할 때 사용)
+    private Animator ani;
 
     // 게임 오브젝트가 생성될 때 초기 설정을 하는 함수 (컴포넌트 참조)
     private void Awake()
@@ -29,7 +30,8 @@ public class Player : MonoBehaviour
         // SpriteRenderer 컴포넌트를 가져와서 sprite 변수에 저장
         sprite = GetComponent<SpriteRenderer>();
 
-        animation = GetComponent<Animator>();
+        // Animator 컴포넌트를 가져와서 ani 변수에 저장
+        ani = GetComponent<Animator>();
     }
 
     // 물리 연산이 일정 시간 간격으로 실행되는 함수 (주로 물리 기반 이동 처리)
@@ -53,7 +55,7 @@ public class Player : MonoBehaviour
     // 모든 업데이트 작업이 완료된 후 실행되는 함수 (주로 그래픽적인 작업 처리)
     private void LateUpdate()
     {
-        animation.SetFloat("Speed", Playervector.magnitude);
+        ani.SetFloat("Speed", Playervector.magnitude);
         // Playervector의 x 값이 0이 아니면 (즉, 왼쪽이나 오른쪽으로 이동 중이면)
         if (Playervector.x != 0)
             // x 값이 음수면 스프라이트를 좌우 반전 (왼쪽을 향하도록)
