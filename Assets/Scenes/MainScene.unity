@@ -4794,8 +4794,8 @@ GameObject:
   - component: {fileID: 1261870646}
   - component: {fileID: 1261870645}
   - component: {fileID: 1261870644}
-  - component: {fileID: 1261870643}
   - component: {fileID: 1261870642}
+  - component: {fileID: 1261870643}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Untagged
@@ -4863,7 +4863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de3d077a2e091c4e8342312817db84f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 3
+  playerSpeed: 4
 --- !u!114 &1261870645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5120,7 +5120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de3d077a2e091c4e8342312817db84f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 3
+  playerSpeed: 4
 --- !u!95 &1964051456
 Animator:
   serializedVersion: 5
