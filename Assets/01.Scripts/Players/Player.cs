@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    private Vector2 playerVector;    // 플레이어의 이동 방향을 저장할 변수
+    public Vector2 playerVector;    // 플레이어의 이동 방향을 저장할 변수
     [SerializeField] private float playerSpeed;   // 플레이어 이동 속도
 
     private Rigidbody2D rb;          // 물리 연산에 사용할 Rigidbody2D
