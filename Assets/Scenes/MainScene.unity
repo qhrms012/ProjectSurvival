@@ -32378,12 +32378,13 @@ GameObject:
   - component: {fileID: 1699722497}
   - component: {fileID: 1699722496}
   - component: {fileID: 1699722500}
+  - component: {fileID: 1699722503}
   - component: {fileID: 1699722499}
   - component: {fileID: 1699722501}
   - component: {fileID: 1699722502}
   m_Layer: 0
   m_Name: Enemy(Pig)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32495,8 +32496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23344a8bc61ebaf4aa820da870a8b4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 2.5
-  Target: {fileID: 1964051454}
+  speed: 1
+  target: {fileID: 1964051454}
 --- !u!95 &1699722501
 Animator:
   serializedVersion: 5
@@ -32553,6 +32554,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.18
+--- !u!114 &1699722503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699722495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f3cddc23f3e1446ad1d1fd3522961c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1926020970
 GameObject:
   m_ObjectHideFlags: 0
@@ -37176,7 +37189,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
+  m_Mass: 15
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

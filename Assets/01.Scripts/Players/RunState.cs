@@ -22,7 +22,7 @@ public class RunState : Istate
         if(playerVector.magnitude == 0)
         {
             stateMachine.SetState(new IdleState(stateMachine, animator));
-        }
+        }      
     }
 
     public void Exit()

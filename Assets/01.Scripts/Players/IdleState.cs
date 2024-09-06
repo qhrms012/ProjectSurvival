@@ -7,7 +7,6 @@ public class IdleState : Istate
 {
     private StateMachine stateMachine;
     private Animator animator;
-
     public IdleState(StateMachine machine, Animator animator)
     {
         stateMachine = machine;
