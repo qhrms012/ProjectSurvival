@@ -58,5 +58,10 @@ public class Enemy : MonoBehaviour
         // 적이 피격되었을 때 피격 상태로 전환
         //stateMachine.SetState(new HitState(stateMachine, stateMachine.CurrentState, animator));
     }
+
+    private void OnEnable()
+    {
+        target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+    }
 }
 

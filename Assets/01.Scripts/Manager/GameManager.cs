@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-
+    public ObjectPool ObjectPool;
     public Player player;
-
-
 }
