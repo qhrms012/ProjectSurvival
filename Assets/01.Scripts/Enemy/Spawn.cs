@@ -7,6 +7,8 @@ public class Spawn : MonoBehaviour
 {
 
     public Transform player;
+    public SpawnData spawnData;
+
     float spawnTimer;
     int level;
     [Header("SpawnDistance")]
@@ -40,4 +42,13 @@ public class Spawn : MonoBehaviour
         GameObject enemy = GameManager.Instance.ObjectPool.Get(level);
         enemy.transform.position = spawnPosition;
     }
+}
+
+[System.Serializable]
+public class SpawnData
+{
+    public int spriteType;
+    public float spawnTime;
+    public int health;
+    public float speed;
 }
