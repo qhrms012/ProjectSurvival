@@ -5,7 +5,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float speed; // 적의 속도
+    public float speed; // 적의 속도
+    public float health;
+    public float maxHealth;
+
+    public RuntimeAnimatorController[] animCon;
 
     public Rigidbody2D target; // 추적할 플레이어 또는 목표
     private Rigidbody2D rigid; // 적의 Rigidbody2D
@@ -13,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     private StateMachine stateMachine; // 상태 머신
     private Animator animator;
-    private bool isLive = true; // 적이 살아 있는지 여부
+    private bool isLive; // 적이 살아 있는지 여부
 
     private void Awake()
     {
@@ -62,6 +66,16 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+        isLive = true;
+        health = maxHealth;
+    }
+
+    public void Init(SpawnData data)
+    {
+        animator.runtimeAnimatorController = animCon[data.spriteType];
+        speed = data.speed;
+        maxHealth = data.health;
+        health = data.health;
     }
 }
 

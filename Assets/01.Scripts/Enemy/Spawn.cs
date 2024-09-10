@@ -39,7 +39,7 @@ public class Spawn : MonoBehaviour
         Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, randomDirection.y) * spawnDistance;
 
         // 몹을 해당 위치에 소환
-        GameObject enemy = GameManager.Instance.ObjectPool.Get(level);
+        GameObject enemy = GameManager.Instance.ObjectPool.Get(0);
         enemy.transform.position = spawnPosition;
     }
 }
@@ -47,8 +47,8 @@ public class Spawn : MonoBehaviour
 [System.Serializable]
 public class SpawnData
 {
-    public int spriteType;
     public float spawnTime;
+    public int spriteType;
     public int health;
     public float speed;
 }
