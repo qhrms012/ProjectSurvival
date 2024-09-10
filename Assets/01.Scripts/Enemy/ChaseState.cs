@@ -18,7 +18,6 @@ public class ChaseState : Istate
 
     public void Enter()
     {
-        Debug.Log("Enter Chase State");
         animator.Play("Run"); // 추적 애니메이션
     }
 

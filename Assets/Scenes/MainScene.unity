@@ -32316,6 +32316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy:
   - {fileID: 3587696167817661193, guid: 4715f41dc8add0d4e8ba9a8174899ac4, type: 3}
+  - {fileID: 8001261019621952834, guid: ed52495922ce80a44bed2d0809bdbca3, type: 3}
 --- !u!4 &1281548508
 Transform:
   m_ObjectHideFlags: 0
@@ -32360,6 +32361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 879f546b8cd5ab242940173b4641511e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameTime: 0
+  maxGameTime: 20
   ObjectPool: {fileID: 1281548507}
   player: {fileID: 1964051455}
 --- !u!4 &1622017520
