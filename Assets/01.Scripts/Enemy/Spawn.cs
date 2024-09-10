@@ -21,8 +21,8 @@ public class Spawn : MonoBehaviour
     private void Update()
     {
         spawnTimer += Time.deltaTime;
-        level = Mathf.FloorToInt(GameManager.Instance.gameTime / 10f);
-        if(spawnTimer > (level == 0 ? 0.5f : 0.2f))
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.gameTime / 10f), spawnData.Length -1);
+        if(spawnTimer > spawnData[level].spawnTime)
         {
             spawnTimer = 0;
             SpawnEnemy();
@@ -41,6 +41,7 @@ public class Spawn : MonoBehaviour
         // 몹을 해당 위치에 소환
         GameObject enemy = GameManager.Instance.ObjectPool.Get(0);
         enemy.transform.position = spawnPosition;
+        enemy.GetComponent<Enemy>().Init(spawnData[level]);
     }
 }
 

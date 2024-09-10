@@ -4731,12 +4731,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1964051452}
   spawnData:
-  - spriteType: 0
-    spawnTime: 0.7
+  - spawnTime: 0.7
+    spriteType: 0
     health: 10
     speed: 1.5
-  - spriteType: 1
-    spawnTime: 0.2
+  - spawnTime: 0.2
+    spriteType: 1
     health: 15
     speed: 2.4
   spwanRadius: 15
@@ -32325,7 +32325,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy:
   - {fileID: 3587696167817661193, guid: 4715f41dc8add0d4e8ba9a8174899ac4, type: 3}
-  - {fileID: 8001261019621952834, guid: ed52495922ce80a44bed2d0809bdbca3, type: 3}
 --- !u!4 &1281548508
 Transform:
   m_ObjectHideFlags: 0

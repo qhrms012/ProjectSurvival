@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
         // 상태 머신 초기화
         stateMachine = new StateMachine();
         // 게임이 시작되면 바로 플레이어를 추적하는 ChaseState로 전환
-        stateMachine.SetState(new ChaseState(stateMachine, animator, speed, rigid));
+        //stateMachine.SetState(new ChaseState(stateMachine, animator, speed, rigid));
     }
 
     private void Update()
@@ -76,6 +76,7 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
+        ChasePlayer(); // 적이 활성화되면 바로 플레이어 추적 시작
     }
 }
 
