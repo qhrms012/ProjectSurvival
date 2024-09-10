@@ -8,6 +8,7 @@ public class Spawn : MonoBehaviour
 
     public Transform player;
     float spawnTimer;
+    int level;
     [Header("SpawnDistance")]
     public float spwanRadius = 10f;
     public float minSpawnDistance = 5f;
@@ -18,8 +19,8 @@ public class Spawn : MonoBehaviour
     private void Update()
     {
         spawnTimer += Time.deltaTime;
-
-        if(spawnTimer > 0.2f)
+        level = Mathf.FloorToInt(GameManager.Instance.gameTime / 10f);
+        if(spawnTimer > (level == 0 ? 0.5f : 0.2f))
         {
             spawnTimer = 0;
             SpawnEnemy();
@@ -36,7 +37,7 @@ public class Spawn : MonoBehaviour
         Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, randomDirection.y) * spawnDistance;
 
         // 몹을 해당 위치에 소환
-        GameObject enemy = GameManager.Instance.ObjectPool.Get(0);
+        GameObject enemy = GameManager.Instance.ObjectPool.Get(level);
         enemy.transform.position = spawnPosition;
     }
 }
