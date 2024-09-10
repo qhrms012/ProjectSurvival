@@ -7,7 +7,7 @@ public class Spawn : MonoBehaviour
 {
 
     public Transform player;
-    public SpawnData spawnData;
+    public SpawnData[] spawnData;
 
     float spawnTimer;
     int level;
