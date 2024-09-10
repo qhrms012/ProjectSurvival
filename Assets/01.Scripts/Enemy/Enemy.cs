@@ -78,5 +78,27 @@ public class Enemy : MonoBehaviour
         health = data.health;
         ChasePlayer(); // 적이 활성화되면 바로 플레이어 추적 시작
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Bullet"))
+            return;
+
+        health -= collision.GetComponent<Bullet>().damage;
+
+        if(health > 0)
+        {
+
+        }
+        else
+        {
+            Dead();
+        }
+    }
+
+    private void Dead()
+    {
+        gameObject.SetActive(false);
+    }
 }
 
