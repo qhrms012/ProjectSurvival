@@ -3,13 +3,21 @@ using UnityEngine;
 public class Reposition : MonoBehaviour
 {
     Collider2D coll;
+    public bool isInArea = false;
     private void Awake()
     {
         coll = GetComponent<Collider2D>();
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Area"))
+        {
+            isInArea = true;
+        }
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Area"))
+        if (!collision.CompareTag("Area") || !isInArea)
             return;
 
         Vector3 playerPos = GameManager.Instance.player.transform.position;
@@ -30,7 +38,7 @@ public class Reposition : MonoBehaviour
                 }
                 else if (diffX < diffY)
                 {
-                    transform.Translate(Vector3.up * dirY * 40);
+                    transform.Translate(Vector3.up * dirY * 42);
                 }
                 break;
             case "Enemy":
@@ -41,7 +49,8 @@ public class Reposition : MonoBehaviour
                 }
                 break;
         }
-
+        isInArea = false;  // Area를 벗어난 후 플래그 리셋
     }
+
 
 }
