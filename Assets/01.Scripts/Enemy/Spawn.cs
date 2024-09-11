@@ -36,7 +36,7 @@ public class Spawn : MonoBehaviour
 
         // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
         float spawnDistance = Random.Range(minSpawnDistance, spwanRadius);
-        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, randomDirection.y) * spawnDistance;
+        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
 
         // 몹을 해당 위치에 소환
         GameObject enemy = GameManager.Instance.ObjectPool.Get(0);

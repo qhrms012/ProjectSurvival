@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +14,13 @@ public class Weapon : MonoBehaviour
     public int count;
     public float speed;
 
+    private float timer;
+    Player player;
 
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
     private void Start()
     {
         Init();
@@ -26,12 +35,21 @@ public class Weapon : MonoBehaviour
 
 
             default:
+                timer += Time.deltaTime;
+
+                if(timer > speed)
+                {
+                    timer = 0f;
+                    Fire();
+                }
                 break;
 
         }
         
             
     }
+
+
 
     public void Init()
     {
@@ -40,9 +58,12 @@ public class Weapon : MonoBehaviour
                 speed = 150;
                 WeaponCount();
                 break;
+            case 1:
 
 
             default:
+                count++;
+                speed = 0.1f;
                 break;
                 
         }
@@ -79,7 +100,7 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
-            bullet.GetComponent<Bullet>().Init(damage, -1); // 公茄 包烹 公扁
+            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // 公茄 包烹 公扁
         }
     }
     private void FixedUpdate()
@@ -88,5 +109,26 @@ public class Weapon : MonoBehaviour
         {
             LevelUp(20, 5);
         }
+    }
+
+    private void Fire()
+    {
+        if (!player.scanner.nearestTarget)
+            return;
+
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 dir = targetPos - transform.position;
+        dir = dir.normalized;
+
+
+        Transform bullet = GameManager.Instance.ObjectPool.Get(prefabId).transform;
+        bullet.position = transform.position;
+
+        float angle = Mathf.Atan2(dir.y , dir.x) * Mathf.Rad2Deg - 90f;
+        // bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        bullet.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        bullet.GetComponent<Bullet>().Init(damage, count, dir); 
+
+
     }
 }

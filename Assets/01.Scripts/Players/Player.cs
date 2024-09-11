@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public Scanner scanner;
     public Vector2 playerVector;    // 플레이어의 이동 방향을 저장할 변수
     [SerializeField] private float playerSpeed;   // 플레이어 이동 속도
 
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-
+        scanner = GetComponent<Scanner>();
         // 상태 머신 초기화 및 IdleState로 시작
         stateMachine = new StateMachine();
         stateMachine.SetState(new IdleState(stateMachine, animator));
