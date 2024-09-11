@@ -298,7 +298,7 @@ MonoBehaviour:
   id: 0
   prefabId: 1
   damage: 11
-  count: 5
+  count: 2
   speed: 0
 --- !u!1 &395639874
 GameObject:
@@ -4901,7 +4901,7 @@ MonoBehaviour:
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
   m_UpdateMethod: 0
-  m_BlendUpdateMethod: 1
+  m_BlendUpdateMethod: 0
   m_DefaultBlend:
     m_Style: 1
     m_Time: 2

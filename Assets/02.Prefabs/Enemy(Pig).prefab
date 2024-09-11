@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8720684262271669568}
   - component: {fileID: 517139511232037395}
   - component: {fileID: 846920184778566022}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy(Pig)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f3cddc23f3e1446ad1d1fd3522961c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInArea: 0
 --- !u!50 &8720684262271669568
 Rigidbody2D:
   serializedVersion: 4
@@ -214,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8007705548238293055}
   - component: {fileID: 8612213230139834144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
