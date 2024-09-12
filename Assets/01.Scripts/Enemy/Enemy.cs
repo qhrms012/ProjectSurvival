@@ -19,11 +19,13 @@ public class Enemy : MonoBehaviour
     private Animator animator;
     private bool isLive; // 적이 살아 있는지 여부
 
+    Collider2D coll;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
 
         // 상태 머신 초기화
         stateMachine = new StateMachine();
@@ -34,11 +36,11 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         // 상태 머신 업데이트
-        if (isLive)
-        {
+        //if (isLive)
+        //{
             Vector2 dirVec = target.position - rigid.position;
             stateMachine.Update(dirVec); // 플레이어 방향을 상태에 전달
-        }
+        //}
     }
 
     private void LateUpdate()
@@ -60,13 +62,16 @@ public class Enemy : MonoBehaviour
     public void OnHit()
     {
         // 적이 피격되었을 때 피격 상태로 전환
-        //stateMachine.SetState(new HitState(stateMachine, stateMachine.CurrentState, animator));
+        stateMachine.SetState(new HitState(stateMachine, animator, rigid));
     }
 
     private void OnEnable()
     {
         target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        sprite.sortingOrder = 2;
         health = maxHealth;
     }
 
@@ -85,20 +90,25 @@ public class Enemy : MonoBehaviour
             return;
 
         health -= collision.GetComponent<Bullet>().damage;
+        //StartCoroutine(KnockBack());
 
-        if(health > 0)
+        if (health > 0)
         {
-
+            OnHit();
         }
         else
         {
-            Dead();
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            sprite.sortingOrder = 1;
+            // DeadState로 전환
+            stateMachine.SetState(new DeadState(stateMachine, animator, gameObject));
         }
     }
-
-    private void Dead()
-    {
-        gameObject.SetActive(false);
-    }
+    //private void Dead()
+    //{
+    //    gameObject.SetActive(false);
+    //}
 }
 

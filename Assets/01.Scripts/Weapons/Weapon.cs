@@ -63,7 +63,7 @@ public class Weapon : MonoBehaviour
 
             default:
                 count++;
-                speed = 0.1f;
+                speed = 0.5f;
                 break;
                 
         }

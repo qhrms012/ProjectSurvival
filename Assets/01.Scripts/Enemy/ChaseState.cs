@@ -23,6 +23,7 @@ public class ChaseState : Istate
 
     public void Execute(Vector2 direction)
     {
+       
         // 플레이어를 추적하는 로직
         Vector2 nextVec = direction.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
