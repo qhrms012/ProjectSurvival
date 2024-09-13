@@ -6,7 +6,7 @@ public class DeadState : Istate
     private StateMachine stateMachine;
     private Animator animator;
     private GameObject enemy;
-    private float deathAnimationDuration = 0.6f; // 사망 애니메이션 지속 시간
+    private float deathAnimationDuration = 1f; // 사망 애니메이션 지속 시간
     private float elapsedTime;
 
     public DeadState(StateMachine stateMachine, Animator animator, GameObject enemy)
@@ -26,11 +26,13 @@ public class DeadState : Istate
     public void Execute(Vector2 dirVec)
     {
         elapsedTime += Time.deltaTime;
+
         // Dead 애니메이션이 재생 중이고 끝났는지 확인
-        if(elapsedTime >= deathAnimationDuration)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Dead") &&
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             Dead(); // 애니메이션이 끝나면 비활성화
-        }                   
+        }
     }
 
     public void Exit()
