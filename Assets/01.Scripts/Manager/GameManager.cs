@@ -9,6 +9,8 @@ public class GameManager : Singleton<GameManager>
     public float maxGameTime = 2 * 10f;
 
     [Header("Player Info")]
+    public int health;
+    public int maxHealth;
     public int level;
     public int kill;
     public int exp;
