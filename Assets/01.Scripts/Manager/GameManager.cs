@@ -10,7 +10,7 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Player Info")]
     public int health;
-    public int maxHealth;
+    public int maxHealth = 100;
     public int level;
     public int kill;
     public int exp;
@@ -21,6 +21,10 @@ public class GameManager : Singleton<GameManager>
     public ObjectPool ObjectPool;
     public Player player;
 
+    private void Start()
+    {
+        health = maxHealth;
+    }
     private void Update()
     {
         gameTime += Time.deltaTime;
