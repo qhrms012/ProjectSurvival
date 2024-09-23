@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     public Scanner scanner;
     public Vector2 playerVector;    // 플레이어의 이동 방향을 저장할 변수
-    [SerializeField] private float playerSpeed;   // 플레이어 이동 속도
+    public float playerSpeed;   // 플레이어 이동 속도
 
     private Rigidbody2D rb;          // 물리 연산에 사용할 Rigidbody2D
     private SpriteRenderer sprite;   // 스프라이트 방향 변경에 사용할 SpriteRenderer

@@ -82,6 +82,7 @@ public class Weapon : MonoBehaviour
                 break;
                 
         }
+        player.BroadcastMessage("ApplyGear");
     }
     public void LevelUp(float damage, int count)
     {
@@ -90,7 +91,8 @@ public class Weapon : MonoBehaviour
 
         if (id == 0)
             WeaponCount();
-            
+
+        player.BroadcastMessage("ApplyGear");
     }
 
 
