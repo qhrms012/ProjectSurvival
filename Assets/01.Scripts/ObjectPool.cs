@@ -7,7 +7,7 @@ public class ObjectPool : MonoBehaviour
     public GameObject[] enemy;
 
 
-    List<GameObject>[] pools;
+    public List<GameObject>[] pools;
 
     private void Awake()
     {

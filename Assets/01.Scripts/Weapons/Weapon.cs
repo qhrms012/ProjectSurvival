@@ -19,12 +19,9 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        player = GetComponentInParent<Player>();
+        player = GameManager.Instance.player;
     }
-    private void Start()
-    {
-        Init();
-    }
+
     void Update()
     {
         switch (id)
@@ -51,8 +48,26 @@ public class Weapon : MonoBehaviour
 
 
 
-    public void Init()
+    public void Init(ItemData data)
     {
+        // 今戚送 実特
+        name = "Weapon" + data.itemId;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
+
+        //実特
+        id = data.itemId;
+        damage = data.baseDamage;
+        count = data.baseCount;
+
+        for(int index = 0; index < GameManager.Instance.objectPool.enemy.Length; index++)
+        {
+            if(data.projectile == GameManager.Instance.objectPool.enemy[index])
+            {
+                prefabId = index;
+                break;
+            }
+        }
         switch(id) { 
             case 0:
                 speed = 150;
@@ -90,7 +105,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
-                bullet = GameManager.Instance.ObjectPool.Get(prefabId).transform;
+                bullet = GameManager.Instance.objectPool.Get(prefabId).transform;
                 bullet.parent = transform;
             }
             bullet.localPosition = Vector3.zero;
@@ -121,7 +136,7 @@ public class Weapon : MonoBehaviour
         dir = dir.normalized;
 
 
-        Transform bullet = GameManager.Instance.ObjectPool.Get(prefabId).transform;
+        Transform bullet = GameManager.Instance.objectPool.Get(prefabId).transform;
         bullet.position = transform.position;
 
         float angle = Mathf.Atan2(dir.y , dir.x) * Mathf.Rad2Deg - 90f;

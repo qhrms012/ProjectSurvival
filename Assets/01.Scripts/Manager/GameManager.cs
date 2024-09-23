@@ -18,7 +18,7 @@ public class GameManager : Singleton<GameManager>
 
 
     [Header("Game Object")]
-    public ObjectPool ObjectPool;
+    public ObjectPool objectPool;
     public Player player;
 
     private void Start()

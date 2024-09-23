@@ -39,7 +39,7 @@ public class Spawn : MonoBehaviour
         Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
 
         // 몹을 해당 위치에 소환
-        GameObject enemy = GameManager.Instance.ObjectPool.Get(0);
+        GameObject enemy = GameManager.Instance.objectPool.Get(0);
         enemy.transform.position = spawnPosition;
         enemy.GetComponent<Enemy>().Init(spawnData[level]);
     }

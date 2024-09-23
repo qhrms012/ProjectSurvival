@@ -33,7 +33,16 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
-
+                if(level == 0)
+                {
+                    GameObject newWeapon = new GameObject();
+                    weapon = newWeapon.AddComponent<Weapon>();
+                    weapon.Init(data);
+                }
+                else
+                {
+                    float nextDamage = data.baseDamage;
+                }
                 break;
             
             case ItemData.ItemType.Glove:
