@@ -50,6 +50,7 @@ public class Item : MonoBehaviour
 
                     weapon.LevelUp(nextDamage, nextCount);
                 }
+                level++;
                 break;
             
             case ItemData.ItemType.Glove:
@@ -65,12 +66,14 @@ public class Item : MonoBehaviour
                     float nextRate = data.damages[level];
                     gear.LevelUp(nextRate);
                 }
+                level++;
                 break;
             case ItemData.ItemType.Heal:
+                GameManager.Instance.health = GameManager.Instance.maxHealth;
                 break;
         }
 
-        level++;
+        
 
         if (level == data.damages.Length)
         {
