@@ -5587,6 +5587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 762500934}
   - component: {fileID: 762500935}
+  - component: {fileID: 762500936}
   m_Layer: 0
   m_Name: HandRight
   m_TagString: Untagged
@@ -5649,7 +5650,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 4
   m_Sprite: {fileID: -353751291, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5661,6 +5662,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &762500936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762500933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a03b31a91d75848a0dc3683a639012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLeft: 0
+  spriter: {fileID: 762500935}
 --- !u!1 &787599069
 GameObject:
   m_ObjectHideFlags: 0
@@ -22186,6 +22201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1985336422}
   - component: {fileID: 1985336423}
+  - component: {fileID: 1985336424}
   m_Layer: 0
   m_Name: HandLeft
   m_TagString: Untagged
@@ -22202,7 +22218,7 @@ Transform:
   m_GameObject: {fileID: 1985336421}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7660445, w: 0.64278764}
-  m_LocalPosition: {x: 0.06, y: -0.14, z: 0}
+  m_LocalPosition: {x: 0, y: -0.14, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22260,6 +22276,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1985336424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985336421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a03b31a91d75848a0dc3683a639012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLeft: 1
+  spriter: {fileID: 1985336423}
 --- !u!1 &2093680622
 GameObject:
   m_ObjectHideFlags: 3
