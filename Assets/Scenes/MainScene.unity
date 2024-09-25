@@ -5656,7 +5656,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -16240,6 +16240,7 @@ MonoBehaviour:
   scanner: {fileID: 0}
   playerVector: {x: 0, y: 0}
   playerSpeed: 3
+  hands: []
 --- !u!114 &1261870645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22118,6 +22119,7 @@ MonoBehaviour:
   scanner: {fileID: 0}
   playerVector: {x: 0, y: 0}
   playerSpeed: 3
+  hands: []
 --- !u!95 &1964051456
 Animator:
   serializedVersion: 5

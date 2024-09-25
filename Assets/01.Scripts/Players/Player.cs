@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         // 상태 머신 초기화 및 IdleState로 시작
         stateMachine = new StateMachine();
         stateMachine.SetState(new IdleState(stateMachine, animator));
-        hands = GetComponentsInChildren<Hand>();
+        hands = GetComponentsInChildren<Hand>(true);
     }
 
     private void FixedUpdate()

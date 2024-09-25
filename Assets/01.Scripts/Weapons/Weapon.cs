@@ -82,6 +82,11 @@ public class Weapon : MonoBehaviour
                 break;
                 
         }
+        // 핸드 셋팅
+        Hand hand = player.hands[(int)data.itemType];
+        hand.spriter.sprite = data.hand;
+        hand.gameObject.SetActive(true);
+
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
     public void LevelUp(float damage, int count)
