@@ -25,6 +25,8 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         health = maxHealth;
+
+        uiLevelUp.Select(0);
     }
     private void Update()
     {
