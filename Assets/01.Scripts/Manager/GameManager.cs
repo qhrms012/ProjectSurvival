@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Game Object")]
     public ObjectPool objectPool;
     public Player player;
+    public LevelUp uiLevelUp;
 
     private void Start()
     {
@@ -43,7 +44,7 @@ public class GameManager : Singleton<GameManager>
         {
             level++;
             exp = 0;
-
+            uiLevelUp.Show();
         }
     }
 }
