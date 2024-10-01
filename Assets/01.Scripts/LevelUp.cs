@@ -15,11 +15,13 @@ public class LevelUp : MonoBehaviour
 
     public void Show()
     {
+        GameManager.Instance.Stop();
         rect.localScale = Vector3.one;
     }
 
     public void Hide()
     {
+        GameManager.Instance.Resume();
         rect.localScale = Vector3.zero;
     }
 
