@@ -49,12 +49,16 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (!GameManager.Instance.isLive)
+            return;
         // 매 프레임마다 상태 머신을 업데이트
         stateMachine.Update(playerVector);
     }
 
     private void LateUpdate()
     {
+        if (!GameManager.Instance.isLive)
+            return;
         // 플레이어 스프라이트 방향 처리
         if (playerVector.x != 0)
             sprite.flipX = playerVector.x < 0;

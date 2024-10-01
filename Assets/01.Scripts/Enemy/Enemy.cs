@@ -35,16 +35,20 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (!GameManager.Instance.isLive)
+            return;
         // 상태 머신 업데이트
         //if (isLive)
         //{
-            Vector2 dirVec = target.position - rigid.position;
+        Vector2 dirVec = target.position - rigid.position;
             stateMachine.Update(dirVec); // 플레이어 방향을 상태에 전달
         //}
     }
 
     private void LateUpdate()
     {
+        if (!GameManager.Instance.isLive)
+            return;
         // 적의 스프라이트 방향 처리
         sprite.flipX = target.position.x > rigid.position.x;
     }
