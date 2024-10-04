@@ -23,11 +23,14 @@ public class GameManager : Singleton<GameManager>
     public Player player;
     public LevelUp uiLevelUp;
 
-    private void Start()
+    public void GameStart()
     {
         health = maxHealth;
 
         uiLevelUp.Select(0);
+
+        isLive = true;
+
     }
     private void Update()
     {
