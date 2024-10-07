@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     private Animator animator;       // 애니메이션 제어에 사용할 Animator
     private StateMachine stateMachine;   // 상태를 관리할 상태 머신
 
+    private bool isDead = false;
+    private bool isHit = false;
+
     private void Awake()
     {
         // 컴포넌트 참조 초기화
@@ -44,7 +47,7 @@ public class Player : MonoBehaviour
     public void OnHit()
     {
         // 플레이어가 피격되었을 때 상태를 HitState로 전환
-        //stateMachine.SetState(new HitState(stateMachine, stateMachine.CurrentState, animator));
+        stateMachine.SetState(new HitState(stateMachine, animator, rb));
     }
 
     private void Update()
@@ -62,5 +65,35 @@ public class Player : MonoBehaviour
         // 플레이어 스프라이트 방향 처리
         if (playerVector.x != 0)
             sprite.flipX = playerVector.x < 0;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(!GameManager.Instance.isLive || isDead)
+            return;
+
+        GameManager.Instance.health -= Time.deltaTime * 10;
+        if (!isHit)
+        {
+            OnHit();
+            isHit = true;  // Hit 상태가 발생한 이후에는 반복되지 않도록 플래그 설정
+            StartCoroutine(ResetHitAfterDelay(0.5f));  // 0.5초 후에 isHit을 false로 초기화
+        }
+        if (GameManager.Instance.health <= 0 && !isDead)
+        {
+            for (int index = 2; index < transform.childCount; index++)
+            {
+                transform.GetChild(index).gameObject.SetActive(false);
+            }
+
+            stateMachine.SetState(new DeadState(stateMachine, animator, gameObject));
+            isDead = true;  // Dead 상태가 발생한 이후에는 반복되지 않도록 플래그 설정
+        }
+    }
+
+    private IEnumerator ResetHitAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);  // 0.5초 대기
+        isHit = false;  // isHit을 다시 false로 설정
     }
 }
