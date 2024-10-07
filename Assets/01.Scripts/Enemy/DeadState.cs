@@ -5,15 +5,15 @@ public class DeadState : Istate
 {
     private StateMachine stateMachine;
     private Animator animator;
-    private GameObject enemy;
+    private GameObject character;
     private float deathAnimationDuration = 1f; // 사망 애니메이션 지속 시간
     private float elapsedTime;
 
-    public DeadState(StateMachine stateMachine, Animator animator, GameObject enemy)
+    public DeadState(StateMachine stateMachine, Animator animator, GameObject character)
     {
         this.stateMachine = stateMachine;
         this.animator = animator;
-        this.enemy = enemy;
+        this.character = character;
     }
 
     public void Enter()
@@ -42,7 +42,11 @@ public class DeadState : Istate
 
     private void Dead()
     {
-        // 적 비활성화
-        enemy.SetActive(false);
+        // 캐릭터가 "Enemy" 태그를 가지고 있는지 확인
+        if (character.CompareTag("Enemy"))
+        {
+            // 적 비활성화
+            character.SetActive(false);
+        }
     }
 }
