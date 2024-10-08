@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -32,6 +33,27 @@ public class GameManager : Singleton<GameManager>
         isLive = true;
 
     }
+
+    public void GameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        isLive = false;
+
+        yield return new WaitForSeconds(0.5f);
+
+        Stop();
+    }
+
+
+    public void GameRetry()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     private void Update()
     {
         if (!isLive)
