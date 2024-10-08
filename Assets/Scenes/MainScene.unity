@@ -836,7 +836,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &237328824
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23391,6 +23391,7 @@ MonoBehaviour:
   objectPool: {fileID: 1281548507}
   player: {fileID: 1964051455}
   uiLevelUp: {fileID: 703794256}
+  uiResult: {fileID: 237328823}
 --- !u!4 &1622017520
 Transform:
   m_ObjectHideFlags: 0
@@ -24872,7 +24873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2028122009
 RectTransform:
   m_ObjectHideFlags: 0

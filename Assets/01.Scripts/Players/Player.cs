@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
 
             stateMachine.SetState(new DeadState(stateMachine, animator, gameObject));
             isDead = true;  // Dead 상태가 발생한 이후에는 반복되지 않도록 플래그 설정
+            GameManager.Instance.GameOver();
         }
     }
 
