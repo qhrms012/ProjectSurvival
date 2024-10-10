@@ -23,7 +23,8 @@ public class GameManager : Singleton<GameManager>
     public ObjectPool objectPool;
     public Player player;
     public LevelUp uiLevelUp;
-    public GameObject uiResult;
+    public Result uiResult;
+    public GameObject enemyCleaner;
 
 
     public void GameStart()
@@ -47,7 +48,8 @@ public class GameManager : Singleton<GameManager>
 
         yield return new WaitForSeconds(0.5f);
 
-        uiResult.SetActive(true);
+        uiResult.gameObject.SetActive(true);
+        uiResult.Lose();
         Stop();
     }
 
