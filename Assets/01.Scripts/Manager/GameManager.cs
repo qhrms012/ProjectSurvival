@@ -33,7 +33,7 @@ public class GameManager : Singleton<GameManager>
 
         uiLevelUp.Select(0);
 
-        isLive = true;
+        Resume();
 
     }
 
@@ -53,6 +53,23 @@ public class GameManager : Singleton<GameManager>
         Stop();
     }
 
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine());
+    }
+
+    IEnumerator GameVictoryRoutine()
+    {
+        isLive = false;
+        enemyCleaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.Win();
+        Stop();
+    }
+
 
     public void GameRetry()
     {
@@ -69,11 +86,15 @@ public class GameManager : Singleton<GameManager>
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
-            
+            GameVictory();
         }
     }
     public void GetExp()
     {
+        if (!isLive)
+            return;
+            
+        
         exp++;
 
         if (exp == nextExp[Mathf.Min(level, nextExp.Length -1)])
