@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public Vector2 playerVector;    // 플레이어의 이동 방향을 저장할 변수
     public float playerSpeed;   // 플레이어 이동 속도
     public Hand[] hands;
+    public RuntimeAnimatorController[] animCon;
 
     private Rigidbody2D rb;          // 물리 연산에 사용할 Rigidbody2D
     private SpriteRenderer sprite;   // 스프라이트 방향 변경에 사용할 SpriteRenderer
@@ -31,6 +32,10 @@ public class Player : MonoBehaviour
         hands = GetComponentsInChildren<Hand>(true);
     }
 
+    private void OnEnable()
+    {
+        animator.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
+    }
     private void FixedUpdate()
     {
         // 플레이어 이동 처리 (상태에 따라 이동 로직이 변경될 수 있음)

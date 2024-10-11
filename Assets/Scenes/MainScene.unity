@@ -17847,6 +17847,7 @@ MonoBehaviour:
   playerVector: {x: 0, y: 0}
   playerSpeed: 3
   hands: []
+  animCon: []
 --- !u!114 &1261870645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24119,6 +24120,7 @@ MonoBehaviour:
   isLive: 0
   gameTime: 0
   maxGameTime: 20
+  playerId: 0
   health: 0
   maxHealth: 100
   level: 0
@@ -24466,7 +24468,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1622017519}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: GameStart
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -25199,7 +25201,7 @@ GameObject:
   - component: {fileID: 1937069921}
   - component: {fileID: 1937069920}
   m_Layer: 5
-  m_Name: Character0 (1)
+  m_Name: Character1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25298,11 +25300,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1622017519}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: GameStart
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -25367,7 +25369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1964051451
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -25513,6 +25515,9 @@ MonoBehaviour:
   playerVector: {x: 0, y: 0}
   playerSpeed: 3
   hands: []
+  animCon:
+  - {fileID: 9100000, guid: 10c9b9b0d6ee31e42a5992e921e516e3, type: 2}
+  - {fileID: 22100000, guid: 02eee663493c96244bf5fac20763fc58, type: 2}
 --- !u!95 &1964051456
 Animator:
   serializedVersion: 5
