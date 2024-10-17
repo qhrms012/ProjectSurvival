@@ -7071,6 +7071,7 @@ MonoBehaviour:
   unlockCharacter:
   - {fileID: 431906968}
   - {fileID: 1519598231}
+  uiNotice: {fileID: 920818729}
 --- !u!4 &488949375
 Transform:
   m_ObjectHideFlags: 0
@@ -8772,7 +8773,7 @@ GameObject:
   - component: {fileID: 920818732}
   - component: {fileID: 920818731}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Notice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
