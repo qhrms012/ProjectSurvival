@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer sprite;   // 스프라이트 방향 변경에 사용할 SpriteRenderer
     private Animator animator;       // 애니메이션 제어에 사용할 Animator
     private StateMachine stateMachine;   // 상태를 관리할 상태 머신
+    private GameObject character;
 
     private bool isDead = false;
     private bool isHit = false;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        character = this.gameObject;
         // 상태 머신 초기화 및 IdleState로 시작
         stateMachine = new StateMachine();
         stateMachine.SetState(new IdleState(stateMachine, animator));
@@ -53,7 +55,7 @@ public class Player : MonoBehaviour
     public void OnHit()
     {
         // 플레이어가 피격되었을 때 상태를 HitState로 전환
-        stateMachine.SetState(new HitState(stateMachine, animator, rb));
+        stateMachine.SetState(new HitState(character,stateMachine, animator, rb));
     }
 
     private void Update()

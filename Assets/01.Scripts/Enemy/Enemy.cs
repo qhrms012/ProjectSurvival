@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D target; // 추적할 플레이어 또는 목표
     private Rigidbody2D rigid; // 적의 Rigidbody2D
     private SpriteRenderer sprite; // 스프라이트 제어
-
+    private GameObject character;
     private StateMachine stateMachine; // 상태 머신
     private Animator animator;
     private bool isLive; // 적이 살아 있는지 여부
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
-
+        character = this.gameObject;
         // 상태 머신 초기화
         stateMachine = new StateMachine();
         // 게임이 시작되면 바로 플레이어를 추적하는 ChaseState로 전환
@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
     public void OnHit()
     {
         // 적이 피격되었을 때 피격 상태로 전환
-        stateMachine.SetState(new HitState(stateMachine, animator, rigid));
+        stateMachine.SetState(new HitState(character, stateMachine, animator, rigid));
     }
 
     private void OnEnable()
