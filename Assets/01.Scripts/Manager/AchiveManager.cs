@@ -25,7 +25,7 @@ public class AchiveManager : MonoBehaviour
 
         foreach (Achive achive in achives)
         {
-            PlayerPrefs.SetInt(achive.ToString(), 1);
+            PlayerPrefs.SetInt(achive.ToString(), 0);
         }
     }
     // Start is called before the first frame update
@@ -45,8 +45,32 @@ public class AchiveManager : MonoBehaviour
         }
     }
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        
+        foreach(Achive achive in achives)
+        {
+            CheckAchive(achive);
+        }
+    }
+
+    void CheckAchive(Achive achive)
+    {
+        bool isAchive = false;
+
+
+        switch (achive)
+        {
+            case Achive.UnlockFrog:
+                isAchive = GameManager.Instance.kill >= 10;
+                break;
+
+            case Achive.UnlockMask:
+                isAchive = GameManager.Instance.gameTime == GameManager.Instance.maxGameTime;
+                break;
+        }
+        if (isAchive &&PlayerPrefs.GetInt(achive.ToString()) == 0)
+        {
+            PlayerPrefs.SetInt(achive.ToString(), 1);
+        }
     }
 }
