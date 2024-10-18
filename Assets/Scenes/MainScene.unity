@@ -25830,6 +25830,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd726c1fb995d94789392b8af3d2bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmClip: {fileID: 0}
+  bgmVolume: 0.2
+  sfxClip: []
+  sfxVolume: 0.5
+  channels: 16
 --- !u!1 &1715717991
 GameObject:
   m_ObjectHideFlags: 0
