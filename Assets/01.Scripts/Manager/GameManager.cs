@@ -38,6 +38,8 @@ public class GameManager : Singleton<GameManager>
 
         Resume();
 
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+
     }
 
     public void GameOver()
@@ -54,6 +56,8 @@ public class GameManager : Singleton<GameManager>
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
     }
 
     public void GameVictory()
@@ -71,6 +75,8 @@ public class GameManager : Singleton<GameManager>
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
+
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
     }
 
 

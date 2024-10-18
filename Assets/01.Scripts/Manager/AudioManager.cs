@@ -17,6 +17,18 @@ public class AudioManager : Singleton<AudioManager>
     AudioSource[] sfxPlayers;
     int channelIndex;
 
+    public enum Sfx
+    {
+        Dead, 
+        Hit, 
+        LevelUp =3, 
+        Lose,
+        Melee,
+        Range =7,
+        Select,
+        Win
+    }
+
     private void Awake()
     {
 
@@ -49,4 +61,26 @@ public class AudioManager : Singleton<AudioManager>
 
     }
 
+
+    public void PlaySfx(Sfx sfx)
+    {
+
+        for (int index = 0; index < sfxPlayers.Length; index++)
+        {
+            int loopIndex = (index + channelIndex) % sfxPlayers.Length;
+
+            if (sfxPlayers[loopIndex].isPlaying)
+            {
+                continue;
+            }
+
+            channelIndex = loopIndex;
+            sfxPlayers[loopIndex].clip = sfxClip[(int)sfx];
+            sfxPlayers[loopIndex].Play();
+            break;
+        }
+
+
+        
+    }
 }
