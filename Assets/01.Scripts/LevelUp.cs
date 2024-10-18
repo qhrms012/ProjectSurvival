@@ -18,12 +18,14 @@ public class LevelUp : MonoBehaviour
         Next();
         GameManager.Instance.Stop();
         rect.localScale = Vector3.one;
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
     }
 
     public void Hide()
     {
         GameManager.Instance.Resume();
         rect.localScale = Vector3.zero;
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     public void Select(int index)

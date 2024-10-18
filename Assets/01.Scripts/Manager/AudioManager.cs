@@ -74,8 +74,14 @@ public class AudioManager : Singleton<AudioManager>
                 continue;
             }
 
+            int ranIndex = 0;
+            if(sfx == Sfx.Hit || sfx == Sfx.Melee)
+            {
+                ranIndex = Random.Range(0, 2);
+            }
+
             channelIndex = loopIndex;
-            sfxPlayers[loopIndex].clip = sfxClip[(int)sfx];
+            sfxPlayers[loopIndex].clip = sfxClip[(int)sfx + ranIndex];
             sfxPlayers[loopIndex].Play();
             break;
         }

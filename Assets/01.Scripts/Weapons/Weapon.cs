@@ -152,8 +152,8 @@ public class Weapon : MonoBehaviour
         float angle = Mathf.Atan2(dir.y , dir.x) * Mathf.Rad2Deg - 90f;
         // bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         bullet.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        bullet.GetComponent<Bullet>().Init(damage, count, dir); 
+        bullet.GetComponent<Bullet>().Init(damage, count, dir);
 
-
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }

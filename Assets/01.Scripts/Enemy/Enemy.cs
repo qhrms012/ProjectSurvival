@@ -99,6 +99,7 @@ public class Enemy : MonoBehaviour
         if (health > 0)
         {
             OnHit();
+            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
         }
         else
         {
@@ -108,6 +109,10 @@ public class Enemy : MonoBehaviour
             sprite.sortingOrder = 1;
             // DeadState·Î ÀüÈ¯
             stateMachine.SetState(new DeadState(stateMachine, animator, gameObject));
+
+            if(GameManager.Instance.isLive)
+                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+
             GameManager.Instance.kill++;
             GameManager.Instance.GetExp();
 
