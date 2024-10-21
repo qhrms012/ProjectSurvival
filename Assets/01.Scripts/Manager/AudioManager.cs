@@ -57,6 +57,7 @@ public class AudioManager : Singleton<AudioManager>
         {
             sfxPlayers[index] = sfxObject.AddComponent<AudioSource>();
             sfxPlayers[index].playOnAwake = false;
+            sfxPlayers[index].bypassListenerEffects = true;
             sfxPlayers[index].volume = sfxVolume;
         }
 
@@ -72,6 +73,11 @@ public class AudioManager : Singleton<AudioManager>
         {
             bgmPlayer.Stop();
         }
+    }
+
+    public void EffectBgm(bool isPlay)
+    {
+       bgmHighPassFilter.enabled = isPlay;
     }
 
 
