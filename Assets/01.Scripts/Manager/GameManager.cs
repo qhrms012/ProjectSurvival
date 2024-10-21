@@ -38,6 +38,7 @@ public class GameManager : Singleton<GameManager>
 
         Resume();
 
+        AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
 
     }
@@ -58,6 +59,7 @@ public class GameManager : Singleton<GameManager>
         Stop();
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
+        AudioManager.Instance.PlayBgm(false);
     }
 
     public void GameVictory()
@@ -77,6 +79,7 @@ public class GameManager : Singleton<GameManager>
         Stop();
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
+        AudioManager.Instance.PlayBgm(false);
     }
 
 

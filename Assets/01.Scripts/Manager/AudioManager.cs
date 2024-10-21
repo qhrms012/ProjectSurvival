@@ -9,6 +9,7 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip bgmClip;
     public float bgmVolume;
     AudioSource bgmPlayer;
+    AudioHighPassFilter bgmHighPassFilter;
 
     [Header("SFX")]
     public AudioClip[] sfxClip;
@@ -45,7 +46,7 @@ public class AudioManager : Singleton<AudioManager>
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = bgmClip;
-
+        bgmHighPassFilter = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //효과음 플레이어 초기화
         GameObject sfxObject = new GameObject("SfxPlayer");
@@ -59,6 +60,18 @@ public class AudioManager : Singleton<AudioManager>
             sfxPlayers[index].volume = sfxVolume;
         }
 
+    }
+
+
+    public void PlayBgm(bool isPlay)
+    {
+        if (isPlay)
+        {
+            bgmPlayer.Play();
+        }else
+        {
+            bgmPlayer.Stop();
+        }
     }
 
 
