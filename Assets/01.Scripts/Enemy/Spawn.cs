@@ -8,6 +8,7 @@ public class Spawn : MonoBehaviour
 
     public Transform player;
     public SpawnData[] spawnData;
+    public float levelTime;
 
     float spawnTimer;
     int level;
@@ -16,7 +17,10 @@ public class Spawn : MonoBehaviour
     public float minSpawnDistance = 5f;
 
 
-
+    private void Awake()
+    {
+        levelTime = GameManager.Instance.maxGameTime / spawnData.Length;
+    }
 
     private void Update()
     {
@@ -24,7 +28,7 @@ public class Spawn : MonoBehaviour
             return;
 
         spawnTimer += Time.deltaTime;
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.gameTime / 10f), spawnData.Length -1);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.gameTime / levelTime), spawnData.Length -1);
         if(spawnTimer > spawnData[level].spawnTime)
         {
             spawnTimer = 0;
