@@ -49,7 +49,8 @@ public class Reposition : MonoBehaviour
             case "Enemy":
                 if (coll.enabled)
                 {
-                    transform.Translate(playerDir * 20 + 
+                    Vector3 dist = playerPos - myPos;
+                    transform.Translate(dist * 20 + 
                         new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0f));
                 }
                 break;
