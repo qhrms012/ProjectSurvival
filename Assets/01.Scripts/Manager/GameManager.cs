@@ -89,6 +89,11 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene(0);
     }
 
+    public void GameQuit()
+    {
+        Application.Quit();
+    }
+
     private void Update()
     {
         if (!isLive)
