@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
     public Player player;
     public LevelUp uiLevelUp;
     public Result uiResult;
+    public Transform uiJoyStick;
     public GameObject enemyCleaner;
 
 
@@ -121,11 +122,13 @@ public class GameManager : Singleton<GameManager>
     {
         isLive = false;
         Time.timeScale = 0;
+        uiJoyStick.localScale = Vector3.zero;
     }
 
     public void Resume()
     {
         isLive = true;
         Time.timeScale = 1;
+        uiJoyStick.localScale = Vector3.one;
     }
 }
