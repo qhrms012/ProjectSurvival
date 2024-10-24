@@ -55,6 +55,7 @@ public class GameManager : Singleton<GameManager>
 
         yield return new WaitForSeconds(0.5f);
 
+        
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
