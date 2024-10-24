@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : Singleton<AudioManager>
 {
@@ -10,6 +11,7 @@ public class AudioManager : Singleton<AudioManager>
     public float bgmVolume;
     AudioSource bgmPlayer;
     AudioHighPassFilter bgmHighPassFilter;
+    [SerializeField] private AudioMixerGroup bgmAudioMixerGroup;
 
     [Header("SFX")]
     public AudioClip[] sfxClip;
@@ -17,7 +19,7 @@ public class AudioManager : Singleton<AudioManager>
     public int channels;
     AudioSource[] sfxPlayers;
     int channelIndex;
-
+    [SerializeField] private AudioMixerGroup sfxAudioMixerGroup;
     public enum Sfx
     {
         Dead, 
@@ -47,6 +49,7 @@ public class AudioManager : Singleton<AudioManager>
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = bgmClip;
         bgmHighPassFilter = Camera.main.GetComponent<AudioHighPassFilter>();
+        bgmPlayer.outputAudioMixerGroup = bgmAudioMixerGroup; // BGM 오디오 믹서 그룹 연결
 
         //효과음 플레이어 초기화
         GameObject sfxObject = new GameObject("SfxPlayer");
@@ -59,6 +62,7 @@ public class AudioManager : Singleton<AudioManager>
             sfxPlayers[index].playOnAwake = false;
             sfxPlayers[index].bypassListenerEffects = true;
             sfxPlayers[index].volume = sfxVolume;
+            sfxPlayers[index].outputAudioMixerGroup = sfxAudioMixerGroup; // SFX 오디오 믹서 그룹 연결
         }
 
     }
@@ -105,7 +109,21 @@ public class AudioManager : Singleton<AudioManager>
             break;
         }
 
-
         
+    }
+
+    public void SetBgmVolume(float volume)
+    {
+        bgmVolume = volume;
+        bgmPlayer.volume = bgmVolume;
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+        sfxVolume = volume;
+        foreach (AudioSource sfxPlayer in sfxPlayers)
+        {
+            sfxPlayer.volume = sfxVolume;
+        }
     }
 }
