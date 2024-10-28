@@ -28,7 +28,10 @@ public class GameManager : Singleton<GameManager>
     public Transform uiJoyStick;
     public GameObject enemyCleaner;
 
-
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
     public void GameStart(int id)
     {
         playerId = id;
