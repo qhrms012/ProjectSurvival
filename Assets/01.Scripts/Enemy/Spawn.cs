@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -28,8 +29,8 @@ public class Spawn : MonoBehaviour
             return;
 
         spawnTimer += Time.deltaTime;
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.gameTime / levelTime), spawnData.Length -1);
-        if(spawnTimer > spawnData[level].spawnTime)
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.Instance.gameTime / levelTime), spawnData.Length - 1);
+        if (spawnTimer > spawnData[level].spawnTime)
         {
             spawnTimer = 0;
             SpawnEnemy();
@@ -38,19 +39,31 @@ public class Spawn : MonoBehaviour
 
     void SpawnEnemy()
     {
-        // 랜덤한 각도를 계산
-        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+        if (PhotonNetwork.IsMasterClient) // 마스터 클라이언트에서만 위치 계산
+        {
+            // 랜덤한 각도를 계산
+            Vector2 randomDirection = Random.insideUnitCircle.normalized;
 
-        // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
-        float spawnDistance = Random.Range(minSpawnDistance, spwanRadius);
-        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
+            // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
+            float spawnDistance = Random.Range(minSpawnDistance, spwanRadius);
+            Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
 
-        // 몹을 해당 위치에 소환
+            // RPC 호출로 모든 클라이언트에 위치 전송
+            PhotonView photonView = PhotonView.Get(this);
+            photonView.RPC("SpawnEnemyAtPosition", RpcTarget.All, spawnPosition, level);
+        }
+    }
+    [PunRPC]
+    void SpawnEnemyAtPosition(Vector3 spawnPosition, int spawnLevel)
+    {
+        // 모든 클라이언트에서 동일한 위치에 적을 스폰
         GameObject enemy = GameManager.Instance.objectPool.Get(0);
         enemy.transform.position = spawnPosition;
-        enemy.GetComponent<Enemy>().Init(spawnData[level]);
+        enemy.GetComponent<Enemy>().Init(spawnData[spawnLevel]);
     }
 }
+
+
 
 [System.Serializable]
 public class SpawnData

@@ -1,5 +1,7 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,23 +30,46 @@ public class GameManager : Singleton<GameManager>
     public Transform uiJoyStick;
     public GameObject enemyCleaner;
 
+    private PhotonView pv;
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
     }
+
+
     public void GameStart(int id)
     {
         playerId = id;
         health = maxHealth;
 
-        player.gameObject.SetActive(true);
-        uiLevelUp.Select(playerId % 2);
+        // 기존에 활성화된 플레이어가 있다면 비활성화하거나 삭제
+        if (player != null)
+        {
+            player.gameObject.SetActive(false); // 또는 Destroy(player.gameObject);
+        }
 
+        if (PhotonNetwork.IsConnected)
+        {
+            // 새로 생성된 플레이어 오브젝트를 네트워크에서 생성
+            GameObject playerObj = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+
+            // 새로 생성된 객체를 player에 할당
+            player = playerObj.GetComponent<Player>();
+        }
+
+        // 새로 생성된 player 객체를 활성화 후 초기화 진행
+        player.gameObject.SetActive(true);
+        // Virtual Camera의 Follow 속성에 새로 생성된 플레이어의 Transform 할당
+        var virtualCamera = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+        virtualCamera.Follow = player.transform;   
+        
+        // UI 및 기타 초기화 설정
+        uiLevelUp.Select(playerId % 2);
         Resume();
 
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
-
     }
 
     public void GameOver()
@@ -109,7 +134,7 @@ public class GameManager : Singleton<GameManager>
         {
             gameTime = maxGameTime;
             GameVictory();
-        }
+        }     
     }
     public void GetExp()
     {

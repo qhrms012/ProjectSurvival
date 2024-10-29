@@ -63,15 +63,22 @@ public class Weapon : MonoBehaviour
         damage = data.baseDamage * Character.Damage;
         count = data.baseCount + Character.Count;
 
-        for(int index = 0; index < GameManager.Instance.objectPool.enemy.Length; index++)
+        if (GameManager.Instance.objectPool.enemy != null && GameManager.Instance.objectPool.enemy.Length > 0)
         {
-            if(data.projectile == GameManager.Instance.objectPool.enemy[index])
+            for (int index = 0; index < GameManager.Instance.objectPool.enemy.Length; index++)
             {
-                prefabId = index;
-                break;
+                if (data.projectile == GameManager.Instance.objectPool.enemy[index])
+                {
+                    prefabId = index;
+                    break;
+                }
             }
         }
-        switch(id) { 
+        else
+        {
+            Debug.LogWarning("Enemy array in objectPool is null or empty.");
+        }
+        switch (id) { 
             case 0:
                 speed = 150 * Character.WeaponSpeed;
                 WeaponCount();
