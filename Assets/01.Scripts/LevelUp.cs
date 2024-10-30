@@ -16,7 +16,7 @@ public class LevelUp : MonoBehaviour
     public void Show()
     {
         Next();
-        GameManager.Instance.Stop();
+        //GameManager.Instance.Stop();
         rect.localScale = Vector3.one;
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
         AudioManager.Instance.EffectBgm(true);

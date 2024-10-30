@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: -297040357565406774}
   - component: {fileID: -6804718748544528257}
   m_Layer: 6
-  m_Name: Enemy(Pig)
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

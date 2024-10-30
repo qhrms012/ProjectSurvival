@@ -50,15 +50,14 @@ public class Spawn : MonoBehaviour
 
             // RPC 호출로 모든 클라이언트에 위치 전송
             PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("SpawnEnemyAtPosition", RpcTarget.All, spawnPosition, level);
+            photonView.RPC("SpawnEnemyAtPosition", RpcTarget.AllBuffered, spawnPosition, level);
         }
     }
     [PunRPC]
     void SpawnEnemyAtPosition(Vector3 spawnPosition, int spawnLevel)
     {
-        // 모든 클라이언트에서 동일한 위치에 적을 스폰
-        GameObject enemy = GameManager.Instance.objectPool.Get(0);
-        enemy.transform.position = spawnPosition;
+        // PhotonNetwork.Instantiate를 사용하여 네트워크에서 관리되는 적 생성
+        GameObject enemy = PhotonNetwork.Instantiate("Enemy", spawnPosition, Quaternion.identity);
         enemy.GetComponent<Enemy>().Init(spawnData[spawnLevel]);
     }
 }
