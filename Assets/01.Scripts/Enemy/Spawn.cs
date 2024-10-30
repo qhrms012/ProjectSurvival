@@ -14,7 +14,7 @@ public class Spawn : MonoBehaviour
     float spawnTimer;
     int level;
     [Header("SpawnDistance")]
-    public float spwanRadius = 10f;
+    public float spawnRadius = 10f;
     public float minSpawnDistance = 5f;
 
 
@@ -45,21 +45,23 @@ public class Spawn : MonoBehaviour
             Vector2 randomDirection = Random.insideUnitCircle.normalized;
 
             // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
-            float spawnDistance = Random.Range(minSpawnDistance, spwanRadius);
+            float spawnDistance = Random.Range(minSpawnDistance, spawnRadius);
             Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
 
-            // RPC 호출로 모든 클라이언트에 위치 전송
+            // 모든 클라이언트에 적을 생성하는 RPC 호출
             PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("SpawnEnemyAtPosition", RpcTarget.AllBuffered, spawnPosition, level);
+            photonView.RPC("SyncEnemyProperties", RpcTarget.AllBuffered, spawnPosition, level); // Buffered로 모든 클라이언트에 동일 상태 유지
         }
     }
+
     [PunRPC]
-    void SpawnEnemyAtPosition(Vector3 spawnPosition, int spawnLevel)
+    void SyncEnemyProperties(Vector3 spawnPosition, int spawnLevel)
     {
-        // PhotonNetwork.Instantiate를 사용하여 네트워크에서 관리되는 적 생성
+        // PhotonNetwork.Instantiate로 네트워크에서 관리되는 적 생성
         GameObject enemy = PhotonNetwork.Instantiate("Enemy", spawnPosition, Quaternion.identity);
         enemy.GetComponent<Enemy>().Init(spawnData[spawnLevel]);
     }
+
 }
 
 
