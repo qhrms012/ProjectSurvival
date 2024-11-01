@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "492032174431",
+    "project_id": "survivaltest-73514",
+    "storage_bucket": "survivaltest-73514.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:492032174431:android:eba59a000a6a2092a5aeea",
+        "android_client_info": {
+          "package_name": "com.boguenPractice.ProjectSurvival"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW6dfRctxZSRykV1xcqmmJ2i44XdMIdHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
