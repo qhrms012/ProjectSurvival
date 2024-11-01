@@ -1,51 +1,63 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using System.Threading.Tasks;
 using UnityEngine;
+using TMPro;
+using Firebase.Auth;
 
 public class AuthManager : MonoBehaviour
 {
     [SerializeField] TMP_InputField emailField;
     [SerializeField] TMP_InputField passwordField;
+    [SerializeField] GameObject authNotice;
 
-    Firebase.Auth.FirebaseAuth auth;
+    private FirebaseAuth auth;
+    private WaitForSecondsRealtime wait;
 
     private void Awake()
     {
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        auth = FirebaseAuth.DefaultInstance;
+        wait = new WaitForSecondsRealtime(2);
     }
 
-    public void Login()
+    public async void Login()
     {
-        auth.SignInWithEmailAndPasswordAsync(emailField.text, passwordField.text)
-            .ContinueWith(task =>
+        try
         {
-            if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log(emailField.text + " 로 로그인 하셨습니다.");
-            }
-            else
-            {
-                Debug.Log("로그인 실패");
-            }
+            await auth.SignInWithEmailAndPasswordAsync(emailField.text, passwordField.text);
+            Debug.Log(emailField.text + " 로 로그인 하셨습니다.");
         }
-        );
+        catch
+        {
+            // 로그인 실패 시 코루틴 호출
+            StartCoroutine(ShowPopupRoutine(0)); // 0번 자식 (로그인 실패 팝업)
+        }
     }
 
-    public void Register()
+    public async void Register()
     {
-        auth.CreateUserWithEmailAndPasswordAsync(emailField.text, passwordField.text)
-            .ContinueWith(task =>
-            {
-                if(!task.IsCanceled && !task.IsFaulted)
-                {
-                    Debug.Log(emailField.text + "로 회원가입\n");
-                }
-                else
-                {
-                    Debug.Log("회원가입 실패\n");
-                }
-            }
-            );
+        try
+        {
+            await auth.CreateUserWithEmailAndPasswordAsync(emailField.text, passwordField.text);
+            Debug.Log(emailField.text + "로 회원가입 성공");
+        }
+        catch
+        {
+            // 회원가입 실패 시 코루틴 호출
+            StartCoroutine(ShowPopupRoutine(1)); // 1번 자식 (회원가입 실패 팝업)
+        }
+    }
+
+    IEnumerator ShowPopupRoutine(int childIndex)
+    {
+        // 적절한 팝업만 표시
+        authNotice.SetActive(true);
+        for (int index = 0; index < authNotice.transform.childCount; index++)
+        {
+            authNotice.transform.GetChild(index).gameObject.SetActive(index == childIndex);
+        }
+
+        yield return wait;
+
+        authNotice.SetActive(false);
     }
 }
