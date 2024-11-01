@@ -38,7 +38,7 @@ public class AuthManager : MonoBehaviour
         try
         {
             await auth.CreateUserWithEmailAndPasswordAsync(emailField.text, passwordField.text);
-            Debug.Log(emailField.text + "로 회원가입 성공");
+            StartCoroutine(ShowPopupRoutine(2));
         }
         catch
         {
