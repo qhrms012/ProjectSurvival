@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Spawn : MonoBehaviour
 {
@@ -10,12 +11,12 @@ public class Spawn : MonoBehaviour
     public Transform player;
     public SpawnData[] spawnData;
     public float levelTime;
-
     float spawnTimer;
     int level;
     [Header("SpawnDistance")]
     public float spawnRadius = 10f;
     public float minSpawnDistance = 5f;
+    public int spawnCount = 5;
 
 
     private void Awake()
@@ -36,31 +37,58 @@ public class Spawn : MonoBehaviour
             SpawnEnemy();
         }
     }
-
-    void SpawnEnemy()
+    private void SpawnEnemy()
     {
-        if (PhotonNetwork.IsMasterClient) // 마스터 클라이언트에서만 위치 계산
+        for (int i = 0; i < spawnCount; i++)
         {
-            // 랜덤한 각도를 계산
-            Vector2 randomDirection = Random.insideUnitCircle.normalized;
-
-            // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
-            float spawnDistance = Random.Range(minSpawnDistance, spawnRadius);
-            Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
-
-            // 모든 클라이언트에 적을 생성하는 RPC 호출
-            PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("SyncEnemyProperties", RpcTarget.AllBuffered, spawnPosition, level); // Buffered로 모든 클라이언트에 동일 상태 유지
+            Vector3 spawnPosition = GetRandomSpawnPosition();
+            GameObject enemy = GameManager.Instance.objectPool.Get(0);
+            enemy.GetComponent<Enemy>().Init(spawnData[level]);
+            if (enemy != null)
+            {
+                enemy.transform.position = spawnPosition;
+                enemy.SetActive(true);
+            }
         }
     }
 
-    [PunRPC]
-    void SyncEnemyProperties(Vector3 spawnPosition, int spawnLevel)
+    private Vector3 GetRandomSpawnPosition()
     {
-        // PhotonNetwork.Instantiate로 네트워크에서 관리되는 적 생성
-        GameObject enemy = PhotonNetwork.Instantiate("Enemy", spawnPosition, Quaternion.identity);
-        enemy.GetComponent<Enemy>().Init(spawnData[spawnLevel]);
+        // 랜덤한 각도를 계산
+        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+
+        // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
+        float spawnDistance = Random.Range(minSpawnDistance, spawnRadius);
+        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, randomDirection.y) * spawnDistance;
+
+        spawnPosition += player.position; // 플레이어 주변으로 스폰 위치 설정
+        return spawnPosition;
     }
+
+    //void SpawnEnemy()
+    //{
+    //    if (PhotonNetwork.IsMasterClient) // 마스터 클라이언트에서만 위치 계산
+    //    {
+    //        // 랜덤한 각도를 계산
+    //        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+
+    //        // 스폰 위치 계산 (랜덤 방향으로 반경 내에서)
+    //        float spawnDistance = Random.Range(minSpawnDistance, spawnRadius);
+    //        Vector3 spawnPosition = player.position + new Vector3(randomDirection.x, randomDirection.y, 0) * spawnDistance;
+
+    //        // 모든 클라이언트에 적을 생성하는 RPC 호출
+    //        PhotonView photonView = PhotonView.Get(this);
+    //        photonView.RPC("SyncEnemyProperties", RpcTarget.AllBuffered, spawnPosition, level); // Buffered로 모든 클라이언트에 동일 상태 유지
+    //    }
+    //}
+
+    //[PunRPC]
+    //void SyncEnemyProperties(Vector3 spawnPosition, int spawnLevel)
+    //{
+    //    // PhotonNetwork.Instantiate로 네트워크에서 관리되는 적 생성
+    //    GameObject enemy = PhotonNetwork.Instantiate("Enemy", spawnPosition, Quaternion.identity);
+    //    enemy.GetComponent<Enemy>().Init(spawnData[spawnLevel]);
+    //}
 
 }
 

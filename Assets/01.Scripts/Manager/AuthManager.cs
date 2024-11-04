@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using Firebase.Auth;
+using UnityEngine.SceneManagement;
 
 public class AuthManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class AuthManager : MonoBehaviour
         {
             await auth.SignInWithEmailAndPasswordAsync(emailField.text, passwordField.text);
             Debug.Log(emailField.text + " 로 로그인 하셨습니다.");
+            SceneManager.LoadScene("Mainscene");
         }
         catch
         {
