@@ -3,15 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 
 public class LeaderBoard : MonoBehaviour
 {
-    private List<Tuple<string, float, int>> leaderboard = new List<Tuple<string, float, int>>();
+    private List<Tuple<string, float, int, Sprite>> leaderboard = new List<Tuple<string, float, int, Sprite>>();
 
 
-
+    public Sprite[] characterImgaes;
     public TextMeshProUGUI[] remainingTimeTextUI; // 남은 시간을 표시할 Text 배열
     public TextMeshProUGUI[] killCountTextUI; // 킬 수를 표시할 Text 배열
 
@@ -20,10 +22,10 @@ public class LeaderBoard : MonoBehaviour
         leaderboard = leaderboard.OrderBy(record => record.Item2).ToList();
     }
 
-    public void AddToLeaderboard(string playerName, float remainingTime)
+    public void AddToLeaderboard(string playerName, float remainingTime, Sprite characterSprite)
     {
         int killCount = GameManager.Instance.kill;
-        leaderboard.Add(new Tuple<string, float, int>(playerName, remainingTime, killCount));
+        leaderboard.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
         UpdateLeaderboardUI();
     }
 

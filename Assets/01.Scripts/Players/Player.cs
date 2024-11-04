@@ -105,4 +105,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(delay);  // 0.5초 대기
         isHit = false;  // isHit을 다시 false로 설정
     }
+    public Sprite GetCurrentSprite()
+    {
+        return sprite.sprite; // 현재 스프라이트를 반환
+    }
+
 }
