@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class LeaderboardUIController : MonoBehaviour
 {
-    public GameObject leaderboardUI;  // 리더보드 UI 패널
-    public Button leaderboardButton;  // 리더보드 버튼
+    public GameObject leaderboardUI;    // 리더보드 UI 패널
+    public Button leaderboardButton;    // 리더보드 버튼
 
     private void Start()
     {
@@ -17,6 +17,18 @@ public class LeaderboardUIController : MonoBehaviour
     {
         // GameManager의 isLive 상태에 따라 버튼 표시 여부 업데이트
         UpdateButtonVisibility();
+
+        // UI가 켜져 있을 때, 다른 화면을 클릭하면 UI 비활성화
+        if (leaderboardUI.activeSelf && Input.GetMouseButtonDown(0))
+        {
+            if (!RectTransformUtility.RectangleContainsScreenPoint(
+                leaderboardUI.GetComponent<RectTransform>(),
+                Input.mousePosition,
+                Camera.main))
+            {
+                leaderboardUI.SetActive(false);
+            }
+        }
     }
 
     public void ToggleLeaderboard()
@@ -27,13 +39,7 @@ public class LeaderboardUIController : MonoBehaviour
 
     private void UpdateButtonVisibility()
     {
-        if (GameManager.Instance.isLive)
-        {
-            leaderboardButton.gameObject.SetActive(false); // 게임이 진행 중일 때 버튼 숨김
-        }
-        else
-        {
-            leaderboardButton.gameObject.SetActive(true);  // 게임이 끝났을 때 버튼 표시
-        }
+        // isLive 상태에 따라 버튼 표시/숨기기
+        leaderboardButton.gameObject.SetActive(!GameManager.Instance.isLive);
     }
 }
