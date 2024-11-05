@@ -86,7 +86,7 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(0.5f);
 
 
-        leaderBoard.AddToLeaderboard(playerName, gameTime, player.GetCurrentSprite());
+        leaderBoard.AddToLeaderboard(playerName, gameTime);
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
@@ -106,7 +106,7 @@ public class GameManager : Singleton<GameManager>
         enemyCleaner.SetActive(true);
 
         yield return new WaitForSeconds(0.5f);
-        leaderBoard.AddToLeaderboard(playerName, gameTime, player.GetCurrentSprite());
+        leaderBoard.AddToLeaderboard(playerName, gameTime);
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();

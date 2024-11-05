@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public float playerSpeed;   // 플레이어 이동 속도
     public Hand[] hands;
     public RuntimeAnimatorController[] animCon;
-
+    private Sprite characterSprite;
     private Rigidbody2D rb;          // 물리 연산에 사용할 Rigidbody2D
     private SpriteRenderer sprite;   // 스프라이트 방향 변경에 사용할 SpriteRenderer
     private Animator animator;       // 애니메이션 제어에 사용할 Animator
@@ -38,6 +38,14 @@ public class Player : MonoBehaviour
     {
         playerSpeed *= Character.Speed;
         animator.runtimeAnimatorController = animCon[GameManager.Instance.playerId];
+        // 애니메이터가 변경된 후 지연을 두고 스프라이트를 설정
+        StartCoroutine(SetCharacterSpriteAfterDelay());
+    }
+
+    private IEnumerator SetCharacterSpriteAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f); // 0.1초 기다림
+        characterSprite = sprite.sprite;
     }
     private void FixedUpdate()
     {
@@ -105,9 +113,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(delay);  // 0.5초 대기
         isHit = false;  // isHit을 다시 false로 설정
     }
-    public Sprite GetCurrentSprite()
+    public Sprite GetCharacterSprite()
     {
-        return sprite.sprite; // 현재 스프라이트를 반환
+        return characterSprite; // 고정된 기본 스프라이트 반환
     }
 
 }
