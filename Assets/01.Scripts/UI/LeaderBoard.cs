@@ -14,6 +14,7 @@ public class LeaderBoard : MonoBehaviour
     public TextMeshProUGUI[] remainingTimeTextUI; // 남은 시간을 표시할 Text 배열
     public TextMeshProUGUI[] killCountTextUI; // 킬 수를 표시할 Text 배열
 
+
     void SortLeaderboard()
     {
         leaderboard = leaderboard.OrderBy(record => record.Item2).ToList();
