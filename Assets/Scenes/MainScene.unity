@@ -22639,6 +22639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboardUI: {fileID: 237328823}
   leaderboardButton: {fileID: 1492304787}
+  leaderboard: {fileID: 1107350952}
 --- !u!1 &1508762551
 GameObject:
   m_ObjectHideFlags: 0

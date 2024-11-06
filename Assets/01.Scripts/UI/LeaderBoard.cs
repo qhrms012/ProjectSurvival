@@ -1,10 +1,12 @@
-using Photon.Realtime;
+using Firebase.Database;
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
+using System.Threading;
 
 public class LeaderBoard : MonoBehaviour
 {
@@ -14,21 +16,83 @@ public class LeaderBoard : MonoBehaviour
     public TextMeshProUGUI[] remainingTimeTextUI; // 남은 시간을 표시할 Text 배열
     public TextMeshProUGUI[] killCountTextUI; // 킬 수를 표시할 Text 배열
 
+    private SynchronizationContext context;
 
-    void SortLeaderboard()
+    // Firebase 데이터베이스 참조
+    private DatabaseReference databaseReference;
+
+    private void Start()
     {
-        leaderboard = leaderboard.OrderBy(record => record.Item2).ToList();
+        // Firebase 데이터베이스 참조 초기화
+        databaseReference = FirebaseDatabase.DefaultInstance.GetReference("leaderboard");
+        context = SynchronizationContext.Current;
     }
 
     public void AddToLeaderboard(string playerName, float remainingTime)
     {
         int killCount = GameManager.Instance.kill;
-        Sprite characterSprite = GameManager.Instance.player.GetCharacterSprite(); // 고정된 스프라이트 가져오기
+        Sprite characterSprite = GameManager.Instance.player.GetCharacterSprite(); // 캐릭터 스프라이트 가져오기
         leaderboard.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
+
+        // Firebase에 데이터 저장
+        SaveLeaderboardEntryToFirebase(playerName, remainingTime, killCount);
+
+        // UI 업데이트
         UpdateLeaderboardUI();
     }
 
-    // 정렬 및 UI 업데이트
+    private void SaveLeaderboardEntryToFirebase(string playerName, float remainingTime, int killCount)
+    {
+        string key = databaseReference.Push().Key;  // Firebase에서 고유 키 생성
+        var leaderboardEntry = new Dictionary<string, object>
+        {
+            { "playerName", playerName },
+            { "remainingTime", remainingTime },
+            { "killCount", killCount }
+        };
+
+        // Firebase에 데이터 저장
+        databaseReference.Child(key).SetValueAsync(leaderboardEntry).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log("Leaderboard entry saved successfully.");
+            }
+            else
+            {
+                Debug.LogWarning("Failed to save leaderboard entry.");
+            }
+        });
+    }
+
+    public async void LoadLeaderboardFromFirebase()
+    {
+        await databaseReference.GetValueAsync().ContinueWith(task => {
+            if (task.IsCompleted && task.Result.Exists)
+            {
+                leaderboard.Clear();
+
+                DataSnapshot snapshot = task.Result;
+                foreach (DataSnapshot playerData in snapshot.Children)
+                {
+                    string playerName = playerData.Child("playerName").Value.ToString();
+                    float remainingTime = float.Parse(playerData.Child("remainingTime").Value.ToString());
+                    int killCount = int.Parse(playerData.Child("killCount").Value.ToString());
+
+                    Sprite characterSprite = GameManager.Instance.player.GetCharacterSprite();
+                    leaderboard.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
+                }
+
+                // 메인 스레드에서 UI 업데이트
+                context.Post(_ => UpdateLeaderboardUI(), null);
+            }
+            else
+            {
+                Debug.LogWarning("Failed to load leaderboard data.");
+            }
+        });
+    }
+
     private void UpdateLeaderboardUI()
     {
         // 남은 시간을 기준으로 오름차순 정렬
@@ -54,4 +118,3 @@ public class LeaderBoard : MonoBehaviour
         }
     }
 }
-

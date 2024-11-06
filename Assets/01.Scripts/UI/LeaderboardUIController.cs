@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ public class LeaderboardUIController : MonoBehaviour
 {
     public GameObject leaderboardUI;    // 리더보드 UI 패널
     public Button leaderboardButton;    // 리더보드 버튼
+    public LeaderBoard leaderboard;     // LeaderBoard 스크립트 참조
 
     private void Start()
     {
@@ -35,6 +37,18 @@ public class LeaderboardUIController : MonoBehaviour
     {
         // 리더보드 UI의 활성화 상태를 토글
         leaderboardUI.SetActive(!leaderboardUI.activeSelf);
+
+        // 리더보드 UI가 활성화되면 데이터를 지연 호출
+        if (leaderboardUI.activeSelf)
+        {
+            StartCoroutine(LoadLeaderboardWithDelay());
+        }
+    }
+
+    private IEnumerator LoadLeaderboardWithDelay()
+    {
+        yield return new WaitForSeconds(0.1f); // 0.1초 지연 후 호출
+        leaderboard.LoadLeaderboardFromFirebase();
     }
 
     private void UpdateButtonVisibility()
