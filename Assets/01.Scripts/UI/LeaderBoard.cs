@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 using System.Threading;
+using Firebase.Auth;
 
 public class LeaderBoard : MonoBehaviour
 {
@@ -20,12 +21,17 @@ public class LeaderBoard : MonoBehaviour
 
     // Firebase 데이터베이스 참조
     private DatabaseReference databaseReference;
+    private FirebaseAuth auth;
+    private string userId;
 
     private void Start()
     {
         // Firebase 데이터베이스 참조 초기화
         databaseReference = FirebaseDatabase.DefaultInstance.GetReference("leaderboard");
         context = SynchronizationContext.Current;
+
+        auth = FirebaseAuth.DefaultInstance;
+        userId = auth.CurrentUser.UserId;
     }
 
     public void AddToLeaderboard(string playerName, float remainingTime)
@@ -43,7 +49,6 @@ public class LeaderBoard : MonoBehaviour
 
     private void SaveLeaderboardEntryToFirebase(string playerName, float remainingTime, int killCount)
     {
-        string key = databaseReference.Push().Key;  // Firebase에서 고유 키 생성
         var leaderboardEntry = new Dictionary<string, object>
         {
             { "playerName", playerName },
@@ -52,7 +57,7 @@ public class LeaderBoard : MonoBehaviour
         };
 
         // Firebase에 데이터 저장
-        databaseReference.Child(key).SetValueAsync(leaderboardEntry).ContinueWith(task =>
+        databaseReference.Child(userId).SetValueAsync(leaderboardEntry).ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -89,6 +94,31 @@ public class LeaderBoard : MonoBehaviour
             else
             {
                 Debug.LogWarning("Failed to load leaderboard data.");
+            }
+        });
+    }
+    // 내 기록 불러오기
+    public async void LoadPersonalRecord()
+    {
+        await databaseReference.Child(userId).GetValueAsync().ContinueWith(task => {
+            if (task.IsCompleted && task.Result.Exists)
+            {
+                leaderboard.Clear();
+
+                DataSnapshot snapshot = task.Result;
+                string playerName = snapshot.Child("playerName").Value.ToString();
+                float remainingTime = float.Parse(snapshot.Child("remainingTime").Value.ToString());
+                int killCount = int.Parse(snapshot.Child("killCount").Value.ToString());
+
+                Sprite characterSprite = GameManager.Instance.player.GetCharacterSprite();
+                leaderboard.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
+
+                // 메인 스레드에서 UI 업데이트
+                context.Post(_ => UpdateLeaderboardUI(), null);
+            }
+            else
+            {
+                Debug.LogWarning("No personal record found.");
             }
         });
     }

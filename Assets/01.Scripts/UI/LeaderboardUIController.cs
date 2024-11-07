@@ -21,16 +21,16 @@ public class LeaderboardUIController : MonoBehaviour
         UpdateButtonVisibility();
 
         // UI가 켜져 있을 때, 다른 화면을 클릭하면 UI 비활성화
-        if (leaderboardUI.activeSelf && Input.GetMouseButtonDown(0))
-        {
-            if (!RectTransformUtility.RectangleContainsScreenPoint(
-                leaderboardUI.GetComponent<RectTransform>(),
-                Input.mousePosition,
-                Camera.main))
-            {
-                leaderboardUI.SetActive(false);
-            }
-        }
+        //if (leaderboardUI.activeSelf && Input.GetMouseButtonDown(0))
+        //{
+        //    if (!RectTransformUtility.RectangleContainsScreenPoint(
+        //        leaderboardUI.GetComponent<RectTransform>(),
+        //        Input.mousePosition,
+        //        Camera.main))
+        //    {
+        //        leaderboardUI.SetActive(false);
+        //    }
+        //}
     }
 
     public void ToggleLeaderboard()
