@@ -86,11 +86,11 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(0.5f);
 
 
-        leaderBoard.AddToLeaderboard(playerName, gameTime);
+
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
-
+        leaderBoard.AddToLeaderboard(playerName, gameTime);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
         AudioManager.Instance.PlayBgm(false);
     }
@@ -106,10 +106,11 @@ public class GameManager : Singleton<GameManager>
         enemyCleaner.SetActive(true);
 
         yield return new WaitForSeconds(0.5f);
-        leaderBoard.AddToLeaderboard(playerName, gameTime);
+
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
+        leaderBoard.AddToLeaderboard(playerName, gameTime);
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
         AudioManager.Instance.PlayBgm(false);
