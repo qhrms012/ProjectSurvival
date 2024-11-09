@@ -4,9 +4,13 @@ using UnityEngine;
 using TMPro;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
+using System;
 
 public class AuthManager : MonoBehaviour
 {
+    public static AuthManager Instance { get; private set; }
+    public string UserId { get; private set; }
+
     [SerializeField] TMP_InputField emailField;
     [SerializeField] TMP_InputField passwordField;
     [SerializeField] GameObject authNotice;
@@ -16,6 +20,16 @@ public class AuthManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         auth = FirebaseAuth.DefaultInstance;
         wait = new WaitForSecondsRealtime(2);
     }
@@ -24,14 +38,23 @@ public class AuthManager : MonoBehaviour
     {
         try
         {
-            await auth.SignInWithEmailAndPasswordAsync(emailField.text, passwordField.text);
+            // SignInWithEmailAndPasswordAsync는 UserCredential 객체를 반환
+            var userCredential = await auth.SignInWithEmailAndPasswordAsync(emailField.text, passwordField.text);
+
+            // 로그인한 사용자의 UserId는 UserCredential 객체에서 user 속성으로 접근 가능
+            var user = userCredential.User;
             Debug.Log(emailField.text + " 로 로그인 하셨습니다.");
+
+            // 로그인 후 UserId 저장
+            UserId = user.UserId;
+
+            // 메인 씬으로 전환
             SceneManager.LoadScene("Mainscene");
         }
-        catch
+        catch (Exception e)
         {
-            // 로그인 실패 시 코루틴 호출
-            StartCoroutine(ShowPopupRoutine(0)); // 0번 자식 (로그인 실패 팝업)
+            Debug.LogError("로그인 실패: " + e.Message);
+            StartCoroutine(ShowPopupRoutine(0)); // 로그인 실패 팝업
         }
     }
 

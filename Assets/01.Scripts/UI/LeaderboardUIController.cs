@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,18 +22,6 @@ public class LeaderboardUIController : MonoBehaviour
     {
         // GameManager의 isLive 상태에 따라 버튼 표시 여부 업데이트
         UpdateButtonVisibility();
-
-        // UI가 켜져 있을 때, 다른 화면을 클릭하면 UI 비활성화
-        //if (leaderboardUI.activeSelf && Input.GetMouseButtonDown(0))
-        //{
-        //    if (!RectTransformUtility.RectangleContainsScreenPoint(
-        //        leaderboardUI.GetComponent<RectTransform>(),
-        //        Input.mousePosition,
-        //        Camera.main))
-        //    {
-        //        leaderboardUI.SetActive(false);
-        //    }
-        //}
     }
 
     public void ToggleLeaderboard()
@@ -41,14 +32,26 @@ public class LeaderboardUIController : MonoBehaviour
         // 리더보드 UI가 활성화되면 데이터를 지연 호출
         if (leaderboardUI.activeSelf)
         {
-            StartCoroutine(LoadLeaderboardWithDelay());
+            LoadLeaderboardWithDelay();
         }
     }
 
-    private IEnumerator LoadLeaderboardWithDelay()
+    private async void LoadLeaderboardWithDelay()
     {
-        yield return new WaitForSeconds(0.1f); // 0.1초 지연 후 호출
-        leaderboard.LoadLeaderboardFromFirebase();
+        // 리더보드 데이터를 불러옴
+        List<Tuple<string, float, int, Sprite>> leaderboardData = await DatabaseManager.Instance.LoadLeaderboardEntries();
+
+        if (leaderboardData != null)
+        {
+            // 데이터가 존재하면 각 항목을 개별적으로 AddEntry 호출
+            foreach (var entry in leaderboardData)
+            {
+                leaderboard.AddEntry(entry.Item1, entry.Item2, entry.Item3, entry.Item4);
+            }
+
+            // UI 갱신
+            leaderboard.UpdateLeaderboardUI();
+        }
     }
 
     private void UpdateButtonVisibility()
