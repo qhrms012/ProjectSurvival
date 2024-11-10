@@ -50,48 +50,64 @@ public class DatabaseManager : Singleton<DatabaseManager>
     // 리더보드 데이터를 Firebase에서 불러오는 메서드
     public async Task<List<Tuple<string, float, int, Sprite>>> LoadLeaderboardEntries()
     {
-        DataSnapshot snapshot = await databaseReference.Child("leaderboard").GetValueAsync();
+        if (databaseReference == null)
+        {
+            Debug.LogError("Database reference is null. Make sure InitializeFirebase() is called.");
+            return null;
+        }
+
+        DataSnapshot snapshot;
+        try
+        {
+            snapshot = await databaseReference.Child("leaderboard").GetValueAsync();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Failed to load leaderboard entries: " + ex.Message);
+            return null;
+        }
+
         List<Tuple<string, float, int, Sprite>> leaderboardData = new List<Tuple<string, float, int, Sprite>>();
 
         foreach (var userSnapshot in snapshot.Children)
         {
             foreach (var entrySnapshot in userSnapshot.Children)
             {
-                string playerName = entrySnapshot.Child("playerName").Value.ToString();
-                float remainingTime = float.Parse(entrySnapshot.Child("remainingTime").Value.ToString());
-                int killCount = int.Parse(entrySnapshot.Child("killCount").Value.ToString());
+                // playerName을 안전하게 읽기
+                string playerName = entrySnapshot.Child("playerName").Value != null
+                    ? entrySnapshot.Child("playerName").Value.ToString()
+                    : "Unknown Player"; // 기본 이름 설정
 
-                // characterSprite를 안전하게 읽기
+                // remainingTime을 안전하게 읽기
+                float remainingTime = entrySnapshot.Child("remainingTime").Value != null
+                    ? float.Parse(entrySnapshot.Child("remainingTime").Value.ToString())
+                    : 0f; // 기본 시간 설정
+
+                // killCount를 안전하게 읽기
+                int killCount = entrySnapshot.Child("killCount").Value != null
+                    ? int.Parse(entrySnapshot.Child("killCount").Value.ToString())
+                    : 0; // 기본 킬 수 설정
+
+                // characterSprite 처리
                 Sprite characterSprite = null;
-                string spritePath = "";
+                string spritePath = "CharacterSprites/DefaultSprite"; // 기본 스프라이트 설정
 
                 var characterSpriteValue = entrySnapshot.Child("characterSprite").Value;
                 if (characterSpriteValue != null && characterSpriteValue.ToString() != "")
                 {
                     spritePath = "CharacterSprites/" + characterSpriteValue.ToString();
                 }
-                else
-                {
-                    Debug.LogWarning("No character sprite found for player: " + playerName);
-                    spritePath = "CharacterSprites/DefaultSprite"; // 기본 스프라이트로 대체
-                }
 
-                try
+                characterSprite = Resources.Load<Sprite>(spritePath);
+                if (characterSprite == null)
                 {
-                    characterSprite = Resources.Load<Sprite>(spritePath);
-                    if (characterSprite == null)
-                    {
-                        Debug.LogWarning("Character sprite not found at path: " + spritePath);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning("Error loading sprite at path: " + spritePath + " - " + ex.Message);
+                    Debug.LogWarning($"Character sprite not found at path: {spritePath}");
                 }
 
                 leaderboardData.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
             }
         }
+
 
         return leaderboardData;
     }
