@@ -90,7 +90,7 @@ public class GameManager : Singleton<GameManager>
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
-        leaderBoard.AddToLeaderboard(playerName, gameTime);
+        leaderBoard.AddToLeaderboard(gameTime);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
         AudioManager.Instance.PlayBgm(false);
     }
@@ -110,7 +110,7 @@ public class GameManager : Singleton<GameManager>
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
-        leaderBoard.AddToLeaderboard(playerName, gameTime);
+        leaderBoard.AddToLeaderboard(gameTime);
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
         AudioManager.Instance.PlayBgm(false);

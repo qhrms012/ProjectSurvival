@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using Firebase.Auth;
 
 public class LeaderBoard : MonoBehaviour
 {
@@ -26,7 +27,10 @@ public class LeaderBoard : MonoBehaviour
     {
         try
         {
+            // Firebase에서 리더보드 항목 로드 (Clear 제거)
             leaderboard = await DatabaseManager.Instance.LoadLeaderboardEntries();
+
+            // UI 갱신
             UpdateLeaderboardUI();
         }
         catch (Exception e)
@@ -35,19 +39,21 @@ public class LeaderBoard : MonoBehaviour
         }
     }
 
+
     // 리더보드에 항목을 추가하고 Firebase에 저장
-    public async void AddToLeaderboard(string playerName, float remainingTime)
+    public async void AddToLeaderboard(float remainingTime)
     {
         int killCount = GameManager.Instance.kill;
         Sprite characterSprite = GameManager.Instance.player.GetCharacterSprite();
 
-        // Firebase에 저장
         string userId = DatabaseManager.Instance.GetUserId();
+        string userEmail = FirebaseAuth.DefaultInstance.CurrentUser.Email;
+
         if (userId != null)
         {
             try
             {
-                await DatabaseManager.Instance.SaveLeaderboardEntry(userId, playerName, remainingTime, killCount);
+                await DatabaseManager.Instance.SaveLeaderboardEntry(userId, userEmail, remainingTime, killCount);
                 Debug.Log("Leaderboard entry saved successfully.");
             }
             catch (Exception e)
@@ -56,10 +62,14 @@ public class LeaderBoard : MonoBehaviour
             }
         }
 
-        // UI 갱신 (리스트에 항목을 추가하고 한 번만 UI를 업데이트)
-        leaderboard.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
+        leaderboard.Clear();
+        // UI 갱신
+        leaderboard.Add(new Tuple<string, float, int, Sprite>(userEmail, remainingTime, killCount, characterSprite));
         UpdateLeaderboardUI();
     }
+
+
+
 
     // UI 갱신
     public void UpdateLeaderboardUI()
@@ -87,11 +97,22 @@ public class LeaderBoard : MonoBehaviour
     }
 
     // 리더보드 항목을 추가하고 UI를 업데이트
-    public void AddEntry(string playerName, float remainingTime, int killCount, Sprite characterSprite)
+    public void AddEntry(string userEmail, float remainingTime, int killCount, Sprite characterSprite)
     {
-        leaderboard.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
+        // 중복 항목 확인 후 추가 - 같은 playerName과 remainingTime을 가진 항목이 이미 있는지 확인
+        bool isDuplicate = leaderboard.Any(entry =>
+            entry.Item1 == userEmail &&
+            Mathf.Approximately(entry.Item2, remainingTime) &&
+            entry.Item3 == killCount);
+
+        if (!isDuplicate)
+        {
+            // 중복이 아닌 경우에만 항목 추가
+            leaderboard.Add(new Tuple<string, float, int, Sprite>(userEmail, remainingTime, killCount, characterSprite));
+        }
 
         // UI 갱신
         UpdateLeaderboardUI();
     }
+
 }

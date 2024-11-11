@@ -38,6 +38,7 @@ public class LeaderboardUIController : MonoBehaviour
 
     private async void LoadLeaderboardWithDelay()
     {
+
         // 리더보드 데이터를 불러옴
         List<Tuple<string, float, int, Sprite>> leaderboardData = await DatabaseManager.Instance.LoadLeaderboardEntries();
 

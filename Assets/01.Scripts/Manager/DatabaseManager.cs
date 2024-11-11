@@ -35,17 +35,18 @@ public class DatabaseManager : Singleton<DatabaseManager>
         return null;
     }
 
-    public Task SaveLeaderboardEntry(string userId, string playerName, float remainingTime, int killCount)
+    public Task SaveLeaderboardEntry(string userId, string userEmail, float remainingTime, int killCount)
     {
         var leaderboardEntry = new Dictionary<string, object>
-        {
-            { "playerName", playerName },
-            { "remainingTime", remainingTime },
-            { "killCount", killCount }
-        };
+    {
+        { "userEmail", userEmail },
+        { "remainingTime", remainingTime },
+        { "killCount", killCount }
+    };
 
         return databaseReference.Child("leaderboard").Child(userId).Push().SetValueAsync(leaderboardEntry);
     }
+
 
     // 리더보드 데이터를 Firebase에서 불러오는 메서드
     public async Task<List<Tuple<string, float, int, Sprite>>> LoadLeaderboardEntries()
@@ -73,9 +74,9 @@ public class DatabaseManager : Singleton<DatabaseManager>
         {
             foreach (var entrySnapshot in userSnapshot.Children)
             {
-                // playerName을 안전하게 읽기
-                string playerName = entrySnapshot.Child("playerName").Value != null
-                    ? entrySnapshot.Child("playerName").Value.ToString()
+                // userEmail 안전하게 읽기
+                string userEmail = entrySnapshot.Child("userEmail").Value != null
+                    ? entrySnapshot.Child("userEmail").Value.ToString()
                     : "Unknown Player"; // 기본 이름 설정
 
                 // remainingTime을 안전하게 읽기
@@ -104,7 +105,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
                     Debug.LogWarning($"Character sprite not found at path: {spritePath}");
                 }
 
-                leaderboardData.Add(new Tuple<string, float, int, Sprite>(playerName, remainingTime, killCount, characterSprite));
+                leaderboardData.Add(new Tuple<string, float, int, Sprite>(userEmail, remainingTime, killCount, characterSprite));
             }
         }
 
