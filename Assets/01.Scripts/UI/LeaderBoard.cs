@@ -14,8 +14,6 @@ public class LeaderBoard : MonoBehaviour
     public TextMeshProUGUI[] remainingTimeTextUI;
     public TextMeshProUGUI[] killCountTextUI;
 
-
-
     private void Start()
     {
         // Firebase에서 리더보드 항목 로드
@@ -75,8 +73,7 @@ public class LeaderBoard : MonoBehaviour
     public void UpdateLeaderboardUI()
     {
         // 시간에 따라 정렬 (오름차순)
-        var sortedLeaderboard = leaderboard.OrderBy(record => record.Item2).ToList();
-
+        var sortedLeaderboard = leaderboard.OrderBy(record => record.Item2).ToList();       
         // UI 업데이트
         for (int i = 0; i < remainingTimeTextUI.Length; i++)
         {
@@ -115,4 +112,10 @@ public class LeaderBoard : MonoBehaviour
         UpdateLeaderboardUI();
     }
 
+    // 리더보드 초기화
+    public void ClearEntries()
+    {
+        leaderboard.Clear();
+        UpdateLeaderboardUI();
+    }
 }

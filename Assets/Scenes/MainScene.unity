@@ -10339,9 +10339,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1107350952}
-        m_TargetAssemblyTypeName: LeaderBoard, Assembly-CSharp
-        m_MethodName: LoadLeaderboardFromFirebase
+      - m_Target: {fileID: 1492304790}
+        m_TargetAssemblyTypeName: LeaderboardUIController, Assembly-CSharp
+        m_MethodName: LoadLeaderboardWithDelay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -22738,9 +22738,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1107350952}
-        m_TargetAssemblyTypeName: LeaderBoard, Assembly-CSharp
-        m_MethodName: LoadPersonalRecord
+      - m_Target: {fileID: 1492304790}
+        m_TargetAssemblyTypeName: LeaderboardUIController, Assembly-CSharp
+        m_MethodName: LoadUserLeaderboard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -112,4 +112,66 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
         return leaderboardData;
     }
+    // 특정 사용자 이메일로 필터링된 리더보드 데이터를 불러오는 메서드
+    public async Task<List<Tuple<string, float, int, Sprite>>> LoadUserLeaderboardEntries(string userEmail)
+    {
+        if (databaseReference == null)
+        {
+            Debug.LogError("Database reference is null. Make sure InitializeFirebase() is called.");
+            return null;
+        }
+
+        DataSnapshot snapshot;
+        try
+        {
+            snapshot = await databaseReference.Child("leaderboard").GetValueAsync();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Failed to load user leaderboard entries: " + ex.Message);
+            return null;
+        }
+
+        List<Tuple<string, float, int, Sprite>> userLeaderboardData = new List<Tuple<string, float, int, Sprite>>();
+
+        foreach (var userSnapshot in snapshot.Children)
+        {
+            foreach (var entrySnapshot in userSnapshot.Children)
+            {
+                string entryEmail = entrySnapshot.Child("userEmail").Value != null
+                    ? entrySnapshot.Child("userEmail").Value.ToString()
+                    : "";
+
+                if (entryEmail == userEmail)
+                {
+                    float remainingTime = entrySnapshot.Child("remainingTime").Value != null
+                        ? float.Parse(entrySnapshot.Child("remainingTime").Value.ToString())
+                        : 0f;
+
+                    int killCount = entrySnapshot.Child("killCount").Value != null
+                        ? int.Parse(entrySnapshot.Child("killCount").Value.ToString())
+                        : 0;
+
+                    Sprite characterSprite = null;
+                    string spritePath = "CharacterSprites/DefaultSprite";
+
+                    var characterSpriteValue = entrySnapshot.Child("characterSprite").Value;
+                    if (characterSpriteValue != null && characterSpriteValue.ToString() != "")
+                    {
+                        spritePath = "CharacterSprites/" + characterSpriteValue.ToString();
+                    }
+
+                    characterSprite = Resources.Load<Sprite>(spritePath);
+                    if (characterSprite == null)
+                    {
+                        Debug.LogWarning($"Character sprite not found at path: {spritePath}");
+                    }
+
+                    userLeaderboardData.Add(new Tuple<string, float, int, Sprite>(entryEmail, remainingTime, killCount, characterSprite));
+                }
+            }
+        }
+
+        return userLeaderboardData;
+    }
 }

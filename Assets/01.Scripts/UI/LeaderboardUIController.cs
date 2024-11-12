@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,14 +30,13 @@ public class LeaderboardUIController : MonoBehaviour
         // 리더보드 UI의 활성화 상태를 토글
         leaderboardUI.SetActive(!leaderboardUI.activeSelf);
 
-        // 리더보드 UI가 활성화되면 데이터를 지연 호출
         if (leaderboardUI.activeSelf)
         {
             LoadLeaderboardWithDelay();
         }
     }
 
-    private async void LoadLeaderboardWithDelay()
+    public async void LoadLeaderboardWithDelay()
     {
 
         // 리더보드 데이터를 불러옴
@@ -54,7 +54,22 @@ public class LeaderboardUIController : MonoBehaviour
             leaderboard.UpdateLeaderboardUI();
         }
     }
+    // 이메일로 필터된 리더보드 불러오기 메서드
+    public async void LoadUserLeaderboard()
+    {
+        string userEmail = FirebaseAuth.DefaultInstance.CurrentUser.Email;
+        List<Tuple<string, float, int, Sprite>> userLeaderboardData = await DatabaseManager.Instance.LoadUserLeaderboardEntries(userEmail);
 
+        if (userLeaderboardData != null)
+        {
+            leaderboard.ClearEntries();
+            foreach (var entry in userLeaderboardData)
+            {
+                leaderboard.AddEntry(entry.Item1, entry.Item2, entry.Item3, entry.Item4);
+            }
+            leaderboard.UpdateLeaderboardUI();
+        }
+    }
     private void UpdateButtonVisibility()
     {
         // isLive 상태에 따라 버튼 표시/숨기기

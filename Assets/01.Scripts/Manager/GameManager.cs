@@ -119,7 +119,7 @@ public class GameManager : Singleton<GameManager>
 
     public void GameRetry()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainScene");
     }
 
     public void GameQuit()
