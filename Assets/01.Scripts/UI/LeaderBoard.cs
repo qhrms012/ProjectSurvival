@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using Firebase.Auth;
+using Firebase.Storage;
 
 public class LeaderBoard : MonoBehaviour
 {
@@ -46,12 +47,15 @@ public class LeaderBoard : MonoBehaviour
 
         string userId = DatabaseManager.Instance.GetUserId();
         string userEmail = FirebaseAuth.DefaultInstance.CurrentUser.Email;
+        //string characterSpriteUrl = FirebaseStorage.DefaultInstance.ToString();
 
+        // 캐릭터 이미지를 Firebase에 업로드하고 URL을 가져옴
+        string characterImageUrl = await DatabaseManager.Instance.UploadSpriteToStorage(characterSprite, userId);
         if (userId != null)
         {
             try
             {
-                await DatabaseManager.Instance.SaveLeaderboardEntry(userId, userEmail, remainingTime, killCount);
+                await DatabaseManager.Instance.SaveLeaderboardEntry(userId, userEmail, remainingTime, killCount, characterImageUrl);
                 Debug.Log("Leaderboard entry saved successfully.");
             }
             catch (Exception e)
