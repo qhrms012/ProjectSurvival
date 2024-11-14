@@ -50,7 +50,7 @@ public class LeaderBoard : MonoBehaviour
         //string characterSpriteUrl = FirebaseStorage.DefaultInstance.ToString();
 
         // 캐릭터 이미지를 Firebase에 업로드하고 URL을 가져옴
-        string characterImageUrl = await DatabaseManager.Instance.UploadSpriteToStorage(characterSprite, userId);
+        string characterImageUrl = await DatabaseManager.Instance.UploadFirstFrameToStorage(characterSprite, userId);
         if (userId != null)
         {
             try

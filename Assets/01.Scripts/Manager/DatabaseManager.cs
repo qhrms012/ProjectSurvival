@@ -27,7 +27,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
         storage = FirebaseStorage.DefaultInstance;
     }
-    public async Task<string> UploadSpriteToStorage(Sprite sprite, string userId)
+    public async Task<string> UploadFirstFrameToStorage(Sprite sprite, string userId)
     {
         if (sprite == null)
         {
@@ -35,9 +35,19 @@ public class DatabaseManager : Singleton<DatabaseManager>
             return null;
         }
 
-        // Sprite를 Texture2D로 변환
+        // 첫 번째 프레임의 크기와 위치 설정 (32x32 크기 가정)
+        int frameWidth = 32;
+        int frameHeight = 32;
+        Rect firstFrameRect = new Rect(0, 0, frameWidth, frameHeight);
+
+        // 첫 번째 프레임을 Texture2D로 잘라내기
         Texture2D texture = sprite.texture;
-        byte[] spriteBytes = texture.EncodeToPNG(); // PNG 형식으로 변환
+        Texture2D firstFrameTexture = new Texture2D(frameWidth, frameHeight);
+        firstFrameTexture.SetPixels(texture.GetPixels((int)firstFrameRect.x, (int)firstFrameRect.y, frameWidth, frameHeight));
+        firstFrameTexture.Apply();
+
+        // 잘라낸 첫 번째 프레임을 PNG 형식으로 변환
+        byte[] spriteBytes = firstFrameTexture.EncodeToPNG();
 
         // Storage 경로 설정
         var storageReference = storage.GetReference($"CharacterSprites/{userId}.png");
@@ -46,7 +56,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
         try
         {
             await storageReference.PutBytesAsync(spriteBytes);
-            Debug.Log("Sprite uploaded successfully!");
+            Debug.Log("First frame uploaded successfully!");
 
             // 업로드된 파일의 다운로드 URL 가져오기
             string downloadUrl = (await storageReference.GetDownloadUrlAsync()).ToString();
@@ -54,10 +64,11 @@ public class DatabaseManager : Singleton<DatabaseManager>
         }
         catch (Exception ex)
         {
-            Debug.LogError("Failed to upload sprite to Firebase Storage: " + ex.Message);
+            Debug.LogError("Failed to upload first frame to Firebase Storage: " + ex.Message);
             return null;
         }
     }
+
 
     public string GetUserId()
     {
@@ -186,26 +197,18 @@ public class DatabaseManager : Singleton<DatabaseManager>
                         ? int.Parse(entrySnapshot.Child("killCount").Value.ToString())
                         : 0;
 
+                    // 이미지 URL 가져오기
+                    string characterSpriteUrl = entrySnapshot.Child("characterSpriteUrl").Value?.ToString();
                     Sprite characterSprite = null;
-                    string spritePath = "CharacterSprites/DefaultSprite";
 
-                    var characterSpriteValue = entrySnapshot.Child("characterSprite").Value;
-                    if (characterSpriteValue != null && characterSpriteValue.ToString() != "")
+                    if (!string.IsNullOrEmpty(characterSpriteUrl))
                     {
-                        spritePath = "CharacterSprites/" + characterSpriteValue.ToString();
+                        characterSprite = await LoadSpriteFromUrl(characterSpriteUrl);
                     }
-
-                    characterSprite = Resources.Load<Sprite>(spritePath);
-                    if (characterSprite == null)
-                    {
-                        Debug.LogWarning($"Character sprite not found at path: {spritePath}");
-                    }
-
                     userLeaderboardData.Add(new Tuple<string, float, int, Sprite>(entryEmail, remainingTime, killCount, characterSprite));
                 }
             }
         }
-
         return userLeaderboardData;
     }
 }
