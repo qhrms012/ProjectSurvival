@@ -79,13 +79,13 @@ public class GameManager : Singleton<GameManager>
     {
         switch (playerId)
         {
-            case 1:
+            case 0:
                 return "BlueSpaceHead"; // 파란색 우주 머리
-            case 2:
+            case 1:
                 return "PinkSpaceHead"; // 분홍색 우주 머리
-            case 3:
+            case 2:
                 return "FrogHead"; // 개구리
-            case 4:
+            case 3:
                 return "MaskHead"; // 마스크
             default:
                 return "UnknownCharacter"; // playerId가 잘못되었을 때 기본값 반환
