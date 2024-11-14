@@ -48,9 +48,10 @@ public class LeaderBoard : MonoBehaviour
         string userId = DatabaseManager.Instance.GetUserId();
         string userEmail = FirebaseAuth.DefaultInstance.CurrentUser.Email;
         //string characterSpriteUrl = FirebaseStorage.DefaultInstance.ToString();
+        string characterName = GameManager.Instance.GetCharacterName(); // 캐릭터 이름을 가져옴
 
         // 캐릭터 이미지를 Firebase에 업로드하고 URL을 가져옴
-        string characterImageUrl = await DatabaseManager.Instance.UploadFirstFrameToStorage(characterSprite, userId);
+        string characterImageUrl = await DatabaseManager.Instance.UploadFirstFrameToStorage(characterSprite, userId, characterName);
         if (userId != null)
         {
             try

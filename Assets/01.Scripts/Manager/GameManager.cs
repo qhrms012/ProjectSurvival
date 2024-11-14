@@ -74,6 +74,24 @@ public class GameManager : Singleton<GameManager>
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
+    // 캐릭터 이름을 반환하는 메서드
+    public string GetCharacterName()
+    {
+        switch (playerId)
+        {
+            case 1:
+                return "BlueSpaceHead"; // 파란색 우주 머리
+            case 2:
+                return "PinkSpaceHead"; // 분홍색 우주 머리
+            case 3:
+                return "FrogHead"; // 개구리
+            case 4:
+                return "MaskHead"; // 마스크
+            default:
+                return "UnknownCharacter"; // playerId가 잘못되었을 때 기본값 반환
+        }
+    }
+
     public void GameOver()
     {
         StartCoroutine(GameOverRoutine());

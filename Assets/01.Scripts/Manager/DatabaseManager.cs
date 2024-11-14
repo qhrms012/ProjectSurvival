@@ -27,7 +27,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
         storage = FirebaseStorage.DefaultInstance;
     }
-    public async Task<string> UploadFirstFrameToStorage(Sprite sprite, string userId)
+    public async Task<string> UploadFirstFrameToStorage(Sprite sprite, string userId, string characterName)
     {
         if (sprite == null)
         {
@@ -49,14 +49,14 @@ public class DatabaseManager : Singleton<DatabaseManager>
         // 잘라낸 첫 번째 프레임을 PNG 형식으로 변환
         byte[] spriteBytes = firstFrameTexture.EncodeToPNG();
 
-        // Storage 경로 설정
-        var storageReference = storage.GetReference($"CharacterSprites/{userId}.png");
+        // Storage 경로 설정 - userId와 characterName을 조합하여 고유 파일명 생성
+        var storageReference = storage.GetReference($"CharacterSprites/{userId}_{characterName}.png");
 
         // Storage에 파일 업로드
         try
         {
             await storageReference.PutBytesAsync(spriteBytes);
-            Debug.Log("First frame uploaded successfully!");
+            Debug.Log($"{characterName} sprite uploaded successfully!");
 
             // 업로드된 파일의 다운로드 URL 가져오기
             string downloadUrl = (await storageReference.GetDownloadUrlAsync()).ToString();
@@ -64,10 +64,11 @@ public class DatabaseManager : Singleton<DatabaseManager>
         }
         catch (Exception ex)
         {
-            Debug.LogError("Failed to upload first frame to Firebase Storage: " + ex.Message);
+            Debug.LogError("Failed to upload sprite to Firebase Storage: " + ex.Message);
             return null;
         }
     }
+
 
 
     public string GetUserId()
