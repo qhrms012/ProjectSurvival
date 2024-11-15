@@ -29085,7 +29085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLive: 0
   gameTime: 0
-  maxGameTime: 20
+  maxGameTime: 150
   playerId: 0
   health: 0
   maxHealth: 100
@@ -34283,6 +34283,42 @@ PrefabInstance:
     - target: {fileID: 3669044276978514428, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[2].speed
+      value: 3.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[3].speed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[2].health
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[3].health
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[2].spawnTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[3].spawnTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[2].spriteType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925618598838109059, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
+      propertyPath: spawnData.Array.data[3].spriteType
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5140020706675946488, guid: a9fcce4cbbcd57347b45c52d53a8a667, type: 3}
       propertyPath: m_Sprite

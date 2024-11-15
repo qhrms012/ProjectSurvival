@@ -111,6 +111,8 @@ MonoBehaviour:
   animCon:
   - {fileID: 22100000, guid: edbaff6f3fdc9ef45a7afdf7dc2fefbf, type: 2}
   - {fileID: 22100000, guid: cac174ebcec37fd46a12c5c407d91e07, type: 2}
+  - {fileID: 22100000, guid: 8c26c5bfef311c34dad5bf46fd6e00e8, type: 2}
+  - {fileID: 22100000, guid: 762dd4166eaaba345b8986cee403d8fe, type: 2}
   target: {fileID: 0}
 --- !u!114 &1238135518298659656
 MonoBehaviour:
@@ -228,6 +230,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -297040357565406774}
+  - {fileID: -6804718748544528257}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -261,8 +264,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 0
+    Name: Hit
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &5794859412443604842
 GameObject:
   m_ObjectHideFlags: 0
