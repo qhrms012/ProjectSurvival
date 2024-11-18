@@ -43,7 +43,7 @@ public class LeaderboardUIController : MonoBehaviour
         List<Tuple<string, float, int, Sprite>> leaderboardData = await DatabaseManager.Instance.LoadLeaderboardEntries();
 
         if (leaderboardData != null)
-        {
+        {   
             // 데이터가 존재하면 각 항목을 개별적으로 AddEntry 호출
             foreach (var entry in leaderboardData)
             {

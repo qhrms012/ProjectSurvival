@@ -71,32 +71,42 @@ public class LeaderBoard : MonoBehaviour
         UpdateLeaderboardUI();
     }
 
-
-
-
     // UI 갱신
     public void UpdateLeaderboardUI()
     {
-        // 시간에 따라 정렬 (오름차순)
-        var sortedLeaderboard = leaderboard.OrderBy(record => record.Item2).ToList();       
+        if (leaderboard == null || leaderboard.Count == 0)
+        {
+            Debug.LogWarning("Leaderboard data is empty.");
+            return;
+        }
+
+        // killCount 내림차순, 동일한 경우 remainingTime 내림차순으로 정렬
+        var sortedLeaderboard = leaderboard
+            .OrderByDescending(record => record.Item3) // killCount 내림차순
+            .ThenByDescending(record => record.Item2) // remainingTime 내림차순
+            .ToList();
+        
         // UI 업데이트
         for (int i = 0; i < remainingTimeTextUI.Length; i++)
         {
             if (i < sortedLeaderboard.Count)
             {
+                // 순위, 사용자 이름, 남은 시간 표시
                 remainingTimeTextUI[i].text = $"{i + 1}. {sortedLeaderboard[i].Item1}: {sortedLeaderboard[i].Item2:F2} 초";
                 killCountTextUI[i].text = $"{sortedLeaderboard[i].Item3} 킬";
                 characterImages[i].sprite = sortedLeaderboard[i].Item4;
-                characterImages[i].gameObject.SetActive(true);
+                characterImages[i].gameObject.SetActive(true); // 캐릭터 이미지 활성화
             }
             else
             {
+                // 나머지 빈 슬롯은 비활성화
                 remainingTimeTextUI[i].text = "";
                 killCountTextUI[i].text = "";
                 characterImages[i].gameObject.SetActive(false);
             }
         }
     }
+
 
     // 리더보드 항목을 추가하고 UI를 업데이트
     public void AddEntry(string userEmail, float remainingTime, int killCount, Sprite characterSprite)
