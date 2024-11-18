@@ -6,12 +6,12 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnemyRock2
+  m_Name: EnemyChameleon
   m_Controller: {fileID: 9100000, guid: 10c9b9b0d6ee31e42a5992e921e516e3, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 50c5ebdd5a9b374429bf42cc5d41bbb3, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 7b1d61643bc0ee848b8284bb0d8b5c9d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2079c6f9eabe2c64fa095c727cc73e3e, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: a46fd3f1300b3934795d37d74610f059, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: ac264a63e60778248be6ff555bcaaf35, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 264bda995d0798f469e71219825359b2, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: 71e23aa927913974d97c95798aa7ee77, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 91d8cf6488d181f4a9625c3cf76f0673, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 7c0f3331fbd774445aa51ab043c5e405, type: 2}
