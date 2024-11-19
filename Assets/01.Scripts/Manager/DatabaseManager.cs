@@ -27,6 +27,27 @@ public class DatabaseManager : Singleton<DatabaseManager>
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
         storage = FirebaseStorage.DefaultInstance;
     }
+
+    public Task SaveAchievements(string userId, Dictionary<string, int> achievements)
+    {
+        return databaseReference.Child("users").Child(userId).Child("achievements").SetValueAsync(achievements);
+    }
+
+    public async Task<Dictionary<string, int>> LoadAchievements(string userId)
+    {
+        DataSnapshot snapshot = await databaseReference.Child("users").Child(userId).Child("achievements").GetValueAsync();
+        if (snapshot.Exists)
+        {
+            Dictionary<string, int> achievements = new Dictionary<string, int>();
+            foreach (var child in snapshot.Children)
+            {
+                achievements[child.Key] = int.Parse(child.Value.ToString());
+            }
+            return achievements;
+        }
+        return null; // 데이터가 없으면 null 반환
+    }
+
     public async Task<string> UploadFirstFrameToStorage(Sprite sprite, string userId, string characterName)
     {
         if (sprite == null)
