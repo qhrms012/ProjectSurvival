@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +38,7 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         Application.targetFrameRate = 60;
+        DatabaseManager.Instance.SaveCachedDataToFirebase();
     }
 
 
@@ -144,8 +146,23 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("MainScene");
     }
 
-    public void GameQuit()
+    public async void GameQuit()
     {
+        // 데이터 캐시
+        string userId = DatabaseManager.Instance.GetUserId();
+        string userEmail = FirebaseAuth.DefaultInstance.CurrentUser.Email;
+        float remainingTime = gameTime;
+        int killCount = GameManager.Instance.kill;
+        Sprite characterSprite = player.GetCharacterSprite();
+        string characterName = GetCharacterName();
+
+        // 캐릭터 이미지를 Firebase에 업로드하고 URL을 가져옴
+        string characterSpriteUrl = await DatabaseManager.Instance.UploadFirstFrameToStorage(characterSprite, userId, characterName);
+
+        // 캐시 데이터 저장
+        DatabaseManager.Instance.CacheData(userId, userEmail, remainingTime, killCount, characterSpriteUrl);
+
+        // 데이터 저장이 완료된 후 게임 종료
         Application.Quit();
     }
 

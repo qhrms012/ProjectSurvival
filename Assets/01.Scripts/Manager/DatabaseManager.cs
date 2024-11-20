@@ -11,7 +11,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     private FirebaseStorage storage;
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-
+    private Dictionary<string, object> cachedData;
     private void Awake()
     {
 
@@ -56,7 +56,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
             return null;
         }
 
-        // 첫 번째 프레임의 크기와 위치 설정 (32x32 크기 가정)
+        // 첫 번째 프레임의 크기와 위치 설정
         int frameWidth = 32;
         int frameHeight = 32;
         Rect firstFrameRect = new Rect(0, 0, frameWidth, frameHeight);
@@ -101,7 +101,26 @@ public class DatabaseManager : Singleton<DatabaseManager>
         Debug.LogWarning("User is not authenticated.");
         return null;
     }
+    public void CacheData(string userId, string userEmail, float remainingTime, int killCount, string characterSpriteUrl)
+    {
+        cachedData = new Dictionary<string, object>
+    {
+        { "userEmail", userEmail },
+        { "remainingTime", remainingTime },
+        { "killCount", killCount },
+        { "characterSpriteUrl", characterSpriteUrl }
+    };
+    }
 
+    public void SaveCachedDataToFirebase()
+    {
+        if (cachedData != null)
+        {
+            string userId = GetUserId();
+            databaseReference.Child("leaderboard").Child(userId).Push().SetValueAsync(cachedData);
+            cachedData = null; // 업로드 후 캐시 초기화
+        }
+    }
     public Task SaveLeaderboardEntry(string userId, string userEmail, float remainingTime, int killCount, string characterSpriteUrl)
     {
         var leaderboardEntry = new Dictionary<string, object>
@@ -136,49 +155,49 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     // 리더보드 데이터를 Firebase에서 불러오는 메서드
     public async Task<List<Tuple<string, float, int, Sprite>>> LoadLeaderboardEntries()
-{
-    if (databaseReference == null)
     {
-        Debug.LogError("Database reference is null. Make sure InitializeFirebase() is called.");
-        return null;
-    }
-
-    DataSnapshot snapshot;
-    try
-    {
-        snapshot = await databaseReference.Child("leaderboard").GetValueAsync();
-    }
-    catch (Exception ex)
-    {
-        Debug.LogError("Failed to load leaderboard entries: " + ex.Message);
-        return null;
-    }
-
-    List<Tuple<string, float, int, Sprite>> leaderboardData = new List<Tuple<string, float, int, Sprite>>();
-
-    foreach (var userSnapshot in snapshot.Children)
-    {
-        foreach (var entrySnapshot in userSnapshot.Children)
+        if (databaseReference == null)
         {
-            string userEmail = entrySnapshot.Child("userEmail").Value?.ToString() ?? "Unknown Player";
-            float remainingTime = float.TryParse(entrySnapshot.Child("remainingTime").Value?.ToString(), out var rt) ? rt : 0f;
-            int killCount = int.TryParse(entrySnapshot.Child("killCount").Value?.ToString(), out var kc) ? kc : 0;
-
-            // 이미지 URL 가져오기
-            string characterSpriteUrl = entrySnapshot.Child("characterSpriteUrl").Value?.ToString();
-            Sprite characterSprite = null;
-
-            if (!string.IsNullOrEmpty(characterSpriteUrl))
-            {
-                characterSprite = await LoadSpriteFromUrl(characterSpriteUrl);
-            }
-
-            leaderboardData.Add(new Tuple<string, float, int, Sprite>(userEmail, remainingTime, killCount, characterSprite));
+            Debug.LogError("Database reference is null. Make sure InitializeFirebase() is called.");
+            return null;
         }
-    }
 
-    return leaderboardData;
-}
+        DataSnapshot snapshot;
+        try
+        {
+            snapshot = await databaseReference.Child("leaderboard").GetValueAsync();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Failed to load leaderboard entries: " + ex.Message);
+            return null;
+        }
+
+        List<Tuple<string, float, int, Sprite>> leaderboardData = new List<Tuple<string, float, int, Sprite>>();
+
+        foreach (var userSnapshot in snapshot.Children)
+        {
+            foreach (var entrySnapshot in userSnapshot.Children)
+            {
+                string userEmail = entrySnapshot.Child("userEmail").Value?.ToString() ?? "Unknown Player";
+                float remainingTime = float.TryParse(entrySnapshot.Child("remainingTime").Value?.ToString(), out var rt) ? rt : 0f;
+                int killCount = int.TryParse(entrySnapshot.Child("killCount").Value?.ToString(), out var kc) ? kc : 0;
+
+                // 이미지 URL 가져오기
+                string characterSpriteUrl = entrySnapshot.Child("characterSpriteUrl").Value?.ToString();
+                Sprite characterSprite = null;
+
+                if (!string.IsNullOrEmpty(characterSpriteUrl))
+                {
+                    characterSprite = await LoadSpriteFromUrl(characterSpriteUrl);
+                }
+
+                leaderboardData.Add(new Tuple<string, float, int, Sprite>(userEmail, remainingTime, killCount, characterSprite));
+            }
+        }
+
+        return leaderboardData;
+    }
     // 특정 사용자 이메일로 필터링된 리더보드 데이터를 불러오는 메서드
     public async Task<List<Tuple<string, float, int, Sprite>>> LoadUserLeaderboardEntries(string userEmail)
     {
