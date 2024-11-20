@@ -531,8 +531,8 @@ MonoBehaviour:
   - {fileID: 22100000, guid: 02eee663493c96244bf5fac20763fc58, type: 2}
   - {fileID: 22100000, guid: 64d7efee19549a04a88b00005edb4bc9, type: 2}
   - {fileID: 22100000, guid: d34e685710a80f9458e0634519bc550f, type: 2}
-  - {fileID: 22100000, guid: 58035c62db2a4574c8672e75dd7addef, type: 2}
-  - {fileID: 22100000, guid: 08a80ff21baefc040934b09f4cf71f19, type: 2}
+  - {fileID: 22100000, guid: d34e685710a80f9458e0634519bc550f, type: 2}
+  - {fileID: 22100000, guid: d34e685710a80f9458e0634519bc550f, type: 2}
 --- !u!95 &3695655449837992479
 Animator:
   serializedVersion: 5
