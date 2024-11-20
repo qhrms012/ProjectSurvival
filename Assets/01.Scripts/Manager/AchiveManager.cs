@@ -8,7 +8,7 @@ public class AchiveManager : MonoBehaviour
     public GameObject[] lockCharacter;
     public GameObject[] unlockCharacter;
     public GameObject uiNotice;
-    enum Achive { UnlockFrog, UnlockMask}
+    enum Achive { UnlockFrog, UnlockMask, UnlockMaskHead, UnlockHiddenMask}
     Achive[] achives;
 
     WaitForSecondsRealtime wait;
@@ -101,6 +101,12 @@ public class AchiveManager : MonoBehaviour
                 break;
             case Achive.UnlockMask:
                 isAchive = GameManager.Instance.gameTime >= 120f;
+                break;
+            case Achive.UnlockMaskHead:
+                isAchive = GameManager.Instance.kill >= 2000;
+                break;
+            case Achive.UnlockHiddenMask:
+                isAchive = GameManager.Instance.gameTime == GameManager.Instance.maxGameTime;
                 break;
         }
 

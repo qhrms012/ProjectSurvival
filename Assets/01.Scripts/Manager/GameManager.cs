@@ -87,6 +87,10 @@ public class GameManager : Singleton<GameManager>
                 return "FrogHead"; // 개구리
             case 3:
                 return "MaskHead"; // 마스크
+            case 4:
+                return "MaskHead2";
+            case 5:
+                return "HiddenMask";
             default:
                 return "UnknownCharacter"; // playerId가 잘못되었을 때 기본값 반환
         }
