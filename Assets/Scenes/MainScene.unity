@@ -16662,7 +16662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "2000\uD0AC \uC131\uACF5\uC2DC \uD569\uB958"
+  m_text: "\uC801 2000\uB9C8\uB9AC \uCC98\uCE58 \uC2DC \uD569\uB958"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9d1349f6121c5a4c88b1f5b34f4109e, type: 2}
   m_sharedMaterial: {fileID: 4728352999703588526, guid: e9d1349f6121c5a4c88b1f5b34f4109e, type: 2}
