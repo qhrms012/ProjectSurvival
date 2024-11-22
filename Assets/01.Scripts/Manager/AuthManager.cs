@@ -17,7 +17,7 @@ public class AuthManager : MonoBehaviour
 
     private FirebaseAuth auth;
     private WaitForSecondsRealtime wait;
-
+    private bool isPopupActive = false;
     private void Awake()
     {
         if (Instance == null)
@@ -54,7 +54,7 @@ public class AuthManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError("로그인 실패: " + e.Message);
-            StartCoroutine(ShowPopupRoutine(0)); // 로그인 실패 팝업
+            ShowPopup(0); // 로그인 실패 팝업
         }
     }
 
@@ -63,26 +63,30 @@ public class AuthManager : MonoBehaviour
         try
         {
             await auth.CreateUserWithEmailAndPasswordAsync(emailField.text, passwordField.text);
-            StartCoroutine(ShowPopupRoutine(2));
+            ShowPopup(2);
         }
         catch
         {
             // 회원가입 실패 시 코루틴 호출
-            StartCoroutine(ShowPopupRoutine(1)); // 1번 자식 (회원가입 실패 팝업)
+            ShowPopup(1); // 1번 자식 (회원가입 실패 팝업)
         }
     }
 
-    IEnumerator ShowPopupRoutine(int childIndex)
+    public async void ShowPopup(int childIndex)
     {
-        // 적절한 팝업만 표시
+        if (isPopupActive) return;
+
+        isPopupActive = true;
+
         authNotice.SetActive(true);
         for (int index = 0; index < authNotice.transform.childCount; index++)
         {
             authNotice.transform.GetChild(index).gameObject.SetActive(index == childIndex);
         }
 
-        yield return wait;
+        await Task.Delay(2000); // 2초 대기
 
         authNotice.SetActive(false);
+        isPopupActive = false;
     }
 }
